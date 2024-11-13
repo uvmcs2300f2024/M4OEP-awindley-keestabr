@@ -43,7 +43,7 @@ private:
 
     // Shapes
     unique_ptr<Shape> paddle;
-    unique_ptr<Shape> ball;
+    unique_ptr<Circle> ball;
 //    vector<unique_ptr<Shape>> confetti;
 
     // Shaders
@@ -84,6 +84,9 @@ public:
     /// @details (e.g. keyboard input, mouse input, etc.)
     void processInput();
 
+    /// @brief Checks position of a given circle
+    /// @details Keeps it from leaving the window
+    void checkBounds(unique_ptr<Circle> &bubble) const;
     /// @brief Updates the game state.
     /// @details (e.g. collision detection, delta time, etc.)
     void update();

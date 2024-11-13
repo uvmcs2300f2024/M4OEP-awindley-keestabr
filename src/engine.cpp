@@ -144,18 +144,47 @@ void Engine::processInput() {
 
 }
 
+void Engine::checkBounds(unique_ptr<Circle> &ball) const {
+    vec2 position = ball->getPos();
+    vec2 velocity = ball->getVelocity();
+    float bubbleRadius = ball->getRadius();
+
+    position += velocity * deltaTime;
+
+    // If any bubble hits the edges of the screen, bounce it in the other direction
+    if (position.x - bubbleRadius <= 0) {
+        position.x = bubbleRadius;
+        velocity.x = -velocity.x;
+    }
+    if (position.x + bubbleRadius >= width) {
+        position.x = width - bubbleRadius;
+        velocity.x = -velocity.x;
+    }
+    if (position.y - bubbleRadius <= 0) {
+        position.y = bubbleRadius;
+        velocity.y = -velocity.y;
+    }
+    if (position.y + bubbleRadius >= height) {
+        position.y = height - bubbleRadius;
+        velocity.y = -velocity.y;
+    }
+    // TODO: make ball bounce if touching top of paddle
+//    if (ball->getBottom() == )
+
+    ball->setPos(position);
+    ball->setVelocity(velocity);
+}
+
 void Engine::update() {
     // Calculate delta time
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
-    vec2 position = ball->getPos();
-    vec2 velocity = ball->getVelocity();
 
-    position += velocity * deltaTime;
-
-    ball->setPos(position);
-    ball->setVelocity(velocity);
+    checkBounds(ball);
+    if (ball->isOverlapping(paddle)) {
+        ball->bounce();
+    }
     // End the game when the user spawns 100 confetti
     // If the size of the confetti vector reaches 100, change screen to over
 //    if (confetti.size() == 100) {
