@@ -69,8 +69,11 @@ void Engine::initShaders() {
 }
 
 void Engine::initShapes() {
-    // red spawn button centered in the top left corner
+    // red paddle at bottom middle of screen
     paddle = make_unique<Rect>(shapeShader, vec2{width / 2, height / 4}, vec2{100, 50}, color{1, 0, 0, 1});
+    // red ball just above paddle
+    ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 2.5}, 4,color{1, 0, 0, 1});
+    ball->setVelocity(vec2{10, 100});
 }
 
 void Engine::processInput() {
@@ -105,6 +108,7 @@ void Engine::processInput() {
         // Make sure the paddle cannot go off the screen
         //if (keys[GLFW_KEY_UP] && paddle->getTop() < height) paddle->moveY(speed);
         //if (keys[GLFW_KEY_DOWN] && paddle->getBottom() > 0) paddle->moveY(-speed);
+
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
         if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
 
@@ -145,7 +149,13 @@ void Engine::update() {
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
+    vec2 position = ball->getPos();
+    vec2 velocity = ball->getVelocity();
 
+    position += velocity * deltaTime;
+
+    ball->setPos(position);
+    ball->setVelocity(velocity);
     // End the game when the user spawns 100 confetti
     // If the size of the confetti vector reaches 100, change screen to over
 //    if (confetti.size() == 100) {
@@ -181,8 +191,11 @@ void Engine::render() {
 //                c->setUniforms();
 //                c->draw();
 //            }
+            ball->setUniforms();
+            ball->draw();
             paddle->setUniforms();
             paddle->draw();
+
             // Render font on top of spawn button
 //            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
             break;

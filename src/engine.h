@@ -10,6 +10,7 @@
 #include "font/fontRenderer.h"
 #include "shapes/rect.h"
 #include "shapes/shape.h"
+#include "shapes/circle.h"
 
 using std::vector, std::unique_ptr, std::make_unique, glm::ortho, glm::mat4, glm::vec3, glm::vec4;
 
@@ -42,7 +43,8 @@ private:
 
     // Shapes
     unique_ptr<Shape> paddle;
-    vector<unique_ptr<Shape>> confetti;
+    unique_ptr<Shape> ball;
+//    vector<unique_ptr<Shape>> confetti;
 
     // Shaders
     Shader shapeShader;
