@@ -41,7 +41,7 @@ private:
     unique_ptr<FontRenderer> fontRenderer;
 
     // Shapes
-    unique_ptr<Shape> spawnButton;
+    unique_ptr<Shape> paddle;
     vector<unique_ptr<Shape>> confetti;
 
     // Shaders

@@ -1,4 +1,5 @@
 #include "rect.h"
+#include "circle.h"
 #include "../util/color.h"
 
 Rect::Rect(Shader & shader, vec2 pos, vec2 size, struct color color)

@@ -70,7 +70,7 @@ void Engine::initShaders() {
 
 void Engine::initShapes() {
     // red spawn button centered in the top left corner
-    spawnButton = make_unique<Rect>(shapeShader, vec2{width/2,height/2}, vec2{100, 50}, color{1, 0, 0, 1});
+    paddle = make_unique<Rect>(shapeShader, vec2{width / 2, height / 4}, vec2{100, 50}, color{1, 0, 0, 1});
 }
 
 void Engine::processInput() {
@@ -98,15 +98,15 @@ void Engine::processInput() {
             screen = play;
     }
 
-    // If we're in the play screen and an arrow key is pressed, move the spawnButton
+    // If we're in the play screen and an arrow key is pressed, move the paddle
     // Hint: one of the indices is GLFW_KEY_UP
     if (screen == play) {
-        float speed = 200.0f * deltaTime;
-        // Make sure the spawnButton cannot go off the screen
-        //if (keys[GLFW_KEY_UP] && spawnButton->getTop() < height) spawnButton->moveY(speed);
-        //if (keys[GLFW_KEY_DOWN] && spawnButton->getBottom() > 0) spawnButton->moveY(-speed);
-        if (keys[GLFW_KEY_LEFT] && spawnButton->getLeft() > 0) spawnButton->moveX(-speed);
-        if (keys[GLFW_KEY_RIGHT] && spawnButton->getRight() < width) spawnButton->moveX(speed);
+        float speed = 300.0f * deltaTime;
+        // Make sure the paddle cannot go off the screen
+        //if (keys[GLFW_KEY_UP] && paddle->getTop() < height) paddle->moveY(speed);
+        //if (keys[GLFW_KEY_DOWN] && paddle->getBottom() > 0) paddle->moveY(-speed);
+        if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
+        if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
 
     }
 
@@ -114,19 +114,19 @@ void Engine::processInput() {
 
     // Mouse position is inverted because the origin of the window is in the top left corner
     MouseY = height - MouseY; // Invert y-axis of mouse position
-    //bool buttonOverlapsMouse = spawnButton->isOverlapping(vec2(MouseX, MouseY));
+    //bool buttonOverlapsMouse = paddle->isOverlapping(vec2(MouseX, MouseY));
     //bool mousePressed = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
 
-    // When in play screen, if the user hovers or clicks on the button then change the spawnButton's color
+    // When in play screen, if the user hovers or clicks on the button then change the paddle's color
     // Hint: look at the color objects declared at the top of this file
     if (screen == play) {
 //        if (buttonOverlapsMouse) {
-//            spawnButton->setColor(hoverFill);
+//            paddle->setColor(hoverFill);
 //            if (mousePressed) {
-//                spawnButton->setColor(pressFill);
+//                paddle->setColor(pressFill);
 //            }
 //        } else { // Make sure the spawn button is its original color when the user is not hovering or clicking on it.
-//            spawnButton->setColor(originalFill);
+//            paddle->setColor(originalFill);
 //        }
 
         // When in play screen, if the button was released then spawn confetti
@@ -148,9 +148,9 @@ void Engine::update() {
 
     // End the game when the user spawns 100 confetti
     // If the size of the confetti vector reaches 100, change screen to over
-    if (confetti.size() == 100) {
-        screen = over;
-    }
+//    if (confetti.size() == 100) {
+//        screen = over;
+//    }
 
 }
 
@@ -174,17 +174,17 @@ void Engine::render() {
             break;
         }
         case play: {
-            //  call setUniforms and draw on the spawnButton and all of the confetti pieces
+            //  call setUniforms and draw on the paddle and all of the confetti pieces
             //  Hint: make sure you draw the spawn button after the confetti to make it appear on top
 
 //            for (const unique_ptr<Shape>& c : confetti) {
 //                c->setUniforms();
 //                c->draw();
 //            }
-            spawnButton->setUniforms();
-            spawnButton->draw();
+            paddle->setUniforms();
+            paddle->draw();
             // Render font on top of spawn button
-//            fontRenderer->renderText("Spawn", spawnButton->getPos().x - 30, spawnButton->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
+//            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
             break;
         }
         case over: {
