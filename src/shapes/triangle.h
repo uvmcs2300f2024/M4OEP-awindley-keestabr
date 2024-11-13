@@ -1,0 +1,29 @@
+#ifndef GRAPHICS_TRIANGLE_H
+#define GRAPHICS_TRIANGLE_H
+
+#include "shape.h"
+#include "../framework/shader.h"
+#include <iostream>
+using glm::vec2, glm::vec3;
+
+class Triangle : public Shape {
+public:
+    /// @brief Construct a new Triangle object
+    /// @details This constructor will call the InitRenderData function.
+    /// @param shader The shader to use
+    /// @param pos The position of the triangle
+    /// @param size The size of the triangle
+    /// @param color The color of the triangle
+    Triangle(Shader & shader, vec2 pos, vec2 size, struct color fill);
+
+    /// @brief Destroy the Triangle object and delete its VAO and VBO
+    ~Triangle();
+
+    /// @brief Binds the VAO and calls the virtual draw function
+    void draw() const override;
+
+    /// @brief Populates the vertices and indices vectors
+    void initVectors();
+};
+
+#endif //GRAPHICS_TRIANGLE_H

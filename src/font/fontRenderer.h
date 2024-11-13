@@ -1,8 +1,8 @@
 #ifndef FONTRENDERER_H
 #define FONTRENDERER_H
 
-#include "../shader/shaderManager.h"
-#include "../shader/shader.h"
+#include "../framework/shaderManager.h"
+#include "../framework/shader.h"
 #include "font.h"
 
 /**

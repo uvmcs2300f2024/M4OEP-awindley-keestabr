@@ -2,7 +2,7 @@
 #define GRAPHICS_RECT_H
 
 #include "shape.h"
-#include "../shader/shader.h"
+#include "../framework/shader.h"
 #include <iostream>
 using glm::vec2, glm::vec3;
 
@@ -19,6 +19,12 @@ public:
     /// @param size The size of the square
     /// @param color The color of the square
     Rect(Shader & shader, vec2 pos, vec2 size, struct color color);
+
+    // Overloaded constructor with only width (assuming square) using struct color
+    Rect(Shader &shader, vec2 pos, float width, struct color color);
+
+    // Overloaded constructor with only width (assuming square) using vec4 color
+    Rect(Shader &shader, vec2 pos, float width, vec4 color);
 
     Rect(Rect const& other);
 

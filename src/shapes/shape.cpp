@@ -1,10 +1,14 @@
 #include "shape.h"
 
 Shape::Shape(Shader &shader, glm::vec2 pos, glm::vec2 size, struct color color) :
-        shader(shader), pos(pos), size(size), color(color) {}
+    shader(shader), pos(pos), size(size), color(color) {}
 
 Shape::Shape(Shape const& other) :
-        shader(other.shader), pos(other.pos), size(other.size), color(other.color) {}
+    shader(other.shader), pos(other.pos), size(other.size), color(other.color) {}
+
+Shape::Shape(Shader &shader, glm::vec2 pos, vec2 size, vec4 color) :
+    shader(shader), pos(pos), size(size), color(color) {}
+
 
 // Initialize VAO
 unsigned int Shape::initVAO() {
@@ -51,20 +55,6 @@ void Shape::setUniforms() const {
     this->shader.setVector4f("shapeColor", color.vec);
 }
 
-bool Shape::isOverlapping(const vec2 &point) const {
-    // Implement
-    // A shape is overlapping a point if the point is within the shape's bounding box.
-    // Hint: Even though getLeft, getRight, getTop, and getBottom aren't implemented
-    //       in this class, you can still call them from here.
-    if ((point.x > getLeft() && point.x < getRight()) &&
-        (point.y > getBottom() && point.y < getTop())) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
 // Setters
 void Shape::move(vec2 offset)         { pos += offset; }
 void Shape::moveX(float x)            { pos.x += x; }
@@ -94,11 +84,12 @@ vec2 Shape::getPos() const      { return pos; }
 float Shape::getPosX() const    { return pos.x; }
 float Shape::getPosY() const    { return pos.y; }
 vec2 Shape::getSize() const     { return size; }
+vec2 Shape::getVelocity() const { return velocity; }
+void Shape::setVelocity(vec2 v) { this->velocity = v;}
+
 vec3 Shape::getColor3() const   { return {color.red, color.green, color.blue}; }
 vec4 Shape::getColor4() const   { return color.vec; }
 float Shape::getRed() const     { return color.red; }
 float Shape::getGreen() const   { return color.green; }
 float Shape::getBlue() const    { return color.blue; }
 float Shape::getOpacity() const { return color.alpha; }
-
-void Shape::update(float deltaTime) {}

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-#include "shader/shaderManager.h"
+#include "framework/shaderManager.h"
 #include "font/fontRenderer.h"
 #include "shapes/rect.h"
 #include "shapes/shape.h"
@@ -76,7 +76,7 @@ public:
     void initShapes();
 
     /// @brief Pushes back a new colored rectangle to the confetti vector.
-    void spawnConfetti();
+//    void spawnConfetti();
 
     /// @brief Processes input from the user.
     /// @details (e.g. keyboard input, mouse input, etc.)
