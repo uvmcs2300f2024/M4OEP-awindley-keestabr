@@ -319,9 +319,9 @@ void Engine::update() {
     lastFrame = currentFrame;
 
     checkBounds(ball);
-    //if (ball->isOverlappingPaddle(paddle)) {
-    //    ball->bounce();
-    //}
+    if (ball->isOverlappingPaddle(*ball, *paddle)) {
+        ball->bounce();
+    }
     // End the game when the user spawns 100 confetti
     // If the size of the confetti vector reaches 100, change screen to over
 //    if (confetti.size() == 100) {
