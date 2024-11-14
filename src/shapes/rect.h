@@ -38,6 +38,10 @@ public:
     float getRight() const override;
     float getTop() const override;
     float getBottom() const override;
+
+    static bool isOverlapping(const Rect& r1, const Rect& r2);
+    bool isOverlapping(const Rect& other) const;
+    bool isOverlapping(const Shape& other) const override;
 };
 
 
