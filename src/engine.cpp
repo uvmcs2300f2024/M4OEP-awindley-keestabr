@@ -169,6 +169,7 @@ void Engine::checkBounds(unique_ptr<Circle> &ball) const {
         velocity.y = -velocity.y;
     }
     // TODO: make ball bounce if touching top of paddle
+    // Test comment
 //    if (ball->getBottom() == )
 
     ball->setPos(position);
