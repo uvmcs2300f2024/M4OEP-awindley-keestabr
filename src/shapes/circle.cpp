@@ -50,7 +50,7 @@ bool Circle::isOverlapping(const Circle &c) const {
     return dist < radiusSum;
 }
 
-bool Circle::isOverlapping(const Circle &c, const Rect &r) {
+bool Circle::isOverlappingPaddle(const Circle &c, const Rect &r) {
     if ((c.getRight() < r.getLeft()) || (r.getRight() < c.getLeft())) {
         return false;
     }
@@ -62,13 +62,17 @@ bool Circle::isOverlapping(const Circle &c, const Rect &r) {
     }
 }
 
-static bool Circle::isOverlapping(const Shape &other) const {
+bool Circle::isOverlapping(const Shape &other) const {
     // Dynamic cast to check if the other shape is a Rect
     const Circle* otherCircle = dynamic_cast<const Circle*>(&other);
     if (otherCircle) {
-        return isOverlapping(*this, *otherCircle);
+        return isOverlapping(*otherCircle);
     }
     return false;
+}
+
+bool Circle::isOverlapping(const Rect &other) const {
+    return isOverlapping(*this, other);
 }
 
 void Circle::bounce(Circle &other) {
