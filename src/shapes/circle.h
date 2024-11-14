@@ -84,9 +84,9 @@ public:
 
     bool isOverlapping(const Rect& other) const;
 
-    /// @brief Handles the collision between two circles
-    /// @details This function is called when two circles are overlapping (in Engine's update function).
-    void bounce(Circle &other);
+    /// @brief Handles the collision between a circle and a brick/paddle
+    /// @details This function is called when two shapes are overlapping (in Engine's update function).
+    void bounce();
 };
 
 

@@ -72,33 +72,31 @@ bool Circle::isOverlapping(const Shape &other) const {
 }
 
 bool Circle::isOverlapping(const Rect &other) const {
-    return isOverlapping(*this, other);
+    return isOverlappingPaddle(*this, other);
 }
 
-void Circle::bounce(Circle &other) {
-    glm::vec2 delta = other.getPos() - this->getPos();
+void Circle::bounce() {
+    glm::vec2 delta = this->getPos();
     float distance = glm::length(delta);
-    float overlap = 0.5f * (this->getRadius() + other.getRadius() - distance);
+    //float overlap = 0.5f * (this->getRadius() - distance);
 
     // Check if circles are overlapping
-    if (overlap > 0) {
-        // Adjust positions based on radius (as a proxy for mass)
-        float thisMass = this->getRadius() * this->getRadius() * M_PI;
-        float otherMass = other.getRadius() * other.getRadius() * M_PI;
-        float totalMass = thisMass + otherMass;
+    // Adjust positions based on radius (as a proxy for mass)
+    float thisMass = this->getRadius() * this->getRadius() * M_PI;
+    //float otherMass = other.getRadius() * other.getRadius() * M_PI;
+    //float totalMass = thisMass + otherMass;
 
-        this->setPos(this->getPos() - overlap * (thisMass / totalMass) * delta / distance);
-        other.setPos(other.getPos() + overlap * (otherMass / totalMass) * delta / distance);
+    this->setPos(this->getPos() - overlap * (thisMass) * delta / distance);
+    //other.setPos(other.getPos() + overlap * (otherMass / totalMass) * delta / distance);
 
-        // Velocity calculations for elastic collision
-        glm::vec2 thisVelocity = this->getVelocity();
-        glm::vec2 otherVelocity = other.getVelocity();
-        glm::vec2 velocityDifference = thisVelocity - otherVelocity;
+    // Velocity calculations for elastic collision
+    glm::vec2 thisVelocity = this->getVelocity();
+    //glm::vec2 otherVelocity = other.getVelocity();
+    //glm::vec2 velocityDifference = thisVelocity;
 
-        float dotProduct = glm::dot(velocityDifference, delta) / (distance * distance);
-        glm::vec2 collisionNormal = dotProduct * delta;
+    float dotProduct = glm::dot(thisVelocity, delta) / (distance * distance);
+    glm::vec2 collisionNormal = dotProduct * delta;
 
-        this->setVelocity(thisVelocity - (2 * otherMass / totalMass) * collisionNormal);
-        other.setVelocity(otherVelocity + (2 * thisMass / totalMass) * collisionNormal);
-    }
+    this->setVelocity(thisVelocity - (thisMass) * collisionNormal);
+    //other.setVelocity(otherVelocity + (2 * thisMass / totalMass) * collisionNormal);
 }
