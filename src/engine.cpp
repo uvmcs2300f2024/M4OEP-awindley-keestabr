@@ -319,7 +319,7 @@ void Engine::update() {
     lastFrame = currentFrame;
 
     checkBounds(ball);
-    if (ball->isOverlappingPaddle(paddle)) {
+    if (ball->isOverlappingPaddle(*ball, *paddle)) {
         ball->bounce();
     }
     // End the game when the user spawns 100 confetti

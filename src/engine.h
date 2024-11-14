@@ -42,7 +42,7 @@ private:
     unique_ptr<FontRenderer> fontRenderer;
 
     // Shapes
-    unique_ptr<Rect> paddle;
+    unique_ptr<Shape> paddle;
     unique_ptr<Circle> ball;
     vector<unique_ptr<Shape>> bricksEasy;
     vector<unique_ptr<Shape>> bricksNormal;

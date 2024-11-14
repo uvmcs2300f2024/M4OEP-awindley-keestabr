@@ -50,7 +50,7 @@ bool Circle::isOverlapping(const Circle &c) const {
     return dist < radiusSum;
 }
 
-bool Circle::isOverlappingPaddle(const Circle &c, const Rect &r) {
+bool Circle::isOverlappingPaddle(const Circle &c, const Shape &r) {
     if ((c.getRight() < r.getLeft()) || (r.getRight() < c.getLeft())) {
         return false;
     }
@@ -64,16 +64,16 @@ bool Circle::isOverlappingPaddle(const Circle &c, const Rect &r) {
 
 bool Circle::isOverlapping(const Shape &other) const {
     // Dynamic cast to check if the other shape is a Rect
-    const Circle* otherCircle = dynamic_cast<const Circle*>(&other);
-    if (otherCircle) {
-        return isOverlapping(*otherCircle);
+    const Rect* otherRect = dynamic_cast<const Rect*>(&other);
+    if (otherRect) {
+        return isOverlapping(*otherRect);
     }
     return false;
 }
 
-bool Circle::isOverlapping(const Rect &other) const {
-    return isOverlappingPaddle(*this, other);
-}
+//bool Circle::isOverlapping(const Rect &other) const {
+//    return isOverlappingPaddle(*this, other);
+//}
 
 void Circle::bounce() {
     glm::vec2 delta = this->getPos();
@@ -86,7 +86,7 @@ void Circle::bounce() {
     //float otherMass = other.getRadius() * other.getRadius() * M_PI;
     //float totalMass = thisMass + otherMass;
 
-    this->setPos(this->getPos() - overlap * (thisMass) * delta / distance);
+    this->setPos(this->getPos() - (thisMass) * delta / distance);
     //other.setPos(other.getPos() + overlap * (otherMass / totalMass) * delta / distance);
 
     // Velocity calculations for elastic collision
