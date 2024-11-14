@@ -1,6 +1,6 @@
 #include "engine.h"
 
-enum state {start, easy, normal, hard, over};
+enum state {start, easy, normal, hard, random_, over};
 state screen;
 
 // Colors
@@ -75,19 +75,113 @@ void Engine::initShapes() {
     ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 2.5}, 2,color{1, 1, 1, 1});
     ball->setVelocity(vec2{10, 100});
 
-    int x = 925;
-    int y = 750;
-    for (int i = 0; i < 27; ++i) {
+    // Create game state for easy
+    int x = 950;
+    int y = 725;
+    color currColor = color(.7,0,.5,1);
+    for (int i = 0; i < 29; ++i) {
         if (x > 25) {
-            bricksEasy.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{100, 50}, color(0, 0, 0, 1)));
+            bricksEasy.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
             x -= 100;
         }
         else {
             y -= 50;
-            x = 925;
+            if (y < 725 && y >= 675) {
+                x = 900;
+                currColor = color(.5,.9,0,1);
+            }
+            if (y < 675 && y >= 625) {
+                currColor = color(0,.5,.7,1);
+                x = 950;
+            }
             --i;
         }
+    }
 
+    // Create game state for normal
+    x = 950;
+    y = 725;
+    currColor = color(.7,0,.5,1);
+    for (int i = 0; i < 38; ++i) {
+        if (x > 25) {
+            if (i % 2 == 0) {
+                bricksNormal.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
+            }
+            x -= 100;
+        }
+        else {
+            y -= 50;
+            if (y < 725 && y >= 675) {
+                currColor = color(.5,.9,0,1);
+            }
+            if (y < 675 && y >= 625) {
+                currColor = color(0,.5,.7,1);
+            }
+            if (y < 625 && y >= 575) {
+                currColor = color(.7,.3,.7,1);
+            }
+            x = 950;
+            --i;
+        }
+    }
+
+    // Create game state for hard
+    x = 900;
+    y = 725;
+    currColor = color(.7,0,.5,1);
+    for (int i = 0; i < 38; ++i) {
+        if (x > 25) {
+            bricksHard.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
+            x -= 100;
+        }
+        else {
+            y -= 50;
+            if (y < 725 && y >= 675) {
+                currColor = color(.5,.9,0,1);
+                x = 950;
+            }
+            if (y < 675 && y >= 625) {
+                currColor = color(0,.5,.7,1);
+                x = 900;
+            }
+            if (y < 625 && y >= 575) {
+                currColor = color(.7,.3,.7,1);
+                x = 950;
+            }
+            --i;
+        }
+    }
+
+    // Create game state for random
+    x = 900;
+    y = 725;
+    currColor = color(.7,0,.5,1);
+    for (int i = 0; i < 38; ++i) {
+        if (x > 25) {
+            if (rand() % 7 == 0) {
+                bricksRandom.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
+            }
+            x -= 100;
+        }
+        else {
+            y -= 50;
+            if (y < 725 && y >= 675) {
+                currColor = color(.5,.9,0,1);
+                x = 950;
+            }
+            if (y < 675 && y >= 625) {
+                currColor = color(0,.5,.7,1);
+                x = 900;
+            }
+            if (y < 625 && y >= 575) {
+                currColor = color(.7,.3,.7,1);
+                x = 950;
+            }
+            --i;
+        }
+    }
+    if (bricksRandom.size() == 0) {
+        bricksRandom.push_back(make_unique<Rect>(shapeShader, vec2{500, 750}, vec2{85, 40}, currColor));
     }
 }
 
@@ -118,6 +212,8 @@ void Engine::processInput() {
             screen = normal;
         if (keys[GLFW_KEY_H])
             screen = hard;
+        if (keys[GLFW_KEY_R])
+            screen = random_;
     }
 
     // If we're in the play screen and an arrow key is pressed, move the paddle
@@ -140,6 +236,14 @@ void Engine::processInput() {
     }
 
     if (screen == hard) {
+        float speed = 400.0f * deltaTime;
+
+        if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
+        if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
+
+    }
+
+    if (screen == random_) {
         float speed = 400.0f * deltaTime;
 
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
@@ -240,6 +344,7 @@ void Engine::render() {
             string easy = "Easy (e)";
             string normal = "Normal (n)";
             string hard = "Hard (h)";
+            string random = "Random (r)";
             // (12 * message.length()) is the offset to center text.
             // 12 pixels is the width of each character scaled by 1.
             // NOTE: This line changes the shader being used to the font shader.
@@ -249,6 +354,7 @@ void Engine::render() {
             this->fontRenderer->renderText(easy, width/2 - (6 * message.length()), height - 300, projection, 1, vec3{1, 1, 1});
             this->fontRenderer->renderText(normal, width/2 - (6 * message.length()), height - 350, projection, 1, vec3{1, 1, 1});
             this->fontRenderer->renderText(hard, width/2 - (6 * message.length()), height - 400, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(random, width/2 - (6 * message.length()), height - 450, projection, 1, vec3{1, 1, 1});
             break;
         }
         case easy: {
@@ -264,6 +370,10 @@ void Engine::render() {
             paddle->setUniforms();
             paddle->draw();
 
+            for (int i = 0; i < bricksEasy.size(); ++i) {
+                bricksEasy[i]->setUniforms();
+                bricksEasy[i]->draw();
+            }
             // Render font on top of spawn button
 //            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
             break;
@@ -281,6 +391,11 @@ void Engine::render() {
             paddle->setUniforms();
             paddle->draw();
 
+            for (int i = 0; i < bricksNormal.size(); ++i) {
+                bricksNormal[i]->setUniforms();
+                bricksNormal[i]->draw();
+            }
+
             // Render font on top of spawn button
 //            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
             break;
@@ -295,6 +410,23 @@ void Engine::render() {
 //            }
             ball->setUniforms();
             ball->draw();
+            paddle->setUniforms();
+            paddle->draw();
+
+            // Render font on top of spawn button
+//            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
+            break;
+        }
+        case random_: {
+            //  call setUniforms and draw on the paddle and all of the confetti pieces
+            //  Hint: make sure you draw the spawn button after the confetti to make it appear on top
+
+//            for (const unique_ptr<Shape>& c : confetti) {
+//                c->setUniforms();
+//                c->draw();
+//            }
+            //ball->setUniforms();
+            //ball->draw();
             paddle->setUniforms();
             paddle->draw();
 
