@@ -74,6 +74,21 @@ void Engine::initShapes() {
     // red ball just above paddle
     ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 2.5}, 2,color{1, 1, 1, 1});
     ball->setVelocity(vec2{10, 100});
+
+    int x = 925;
+    int y = 750;
+    for (int i = 0; i < 27; ++i) {
+        if (x > 25) {
+            bricksEasy.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{100, 50}, color(0, 0, 0, 1)));
+            x -= 100;
+        }
+        else {
+            y -= 50;
+            x = 925;
+            --i;
+        }
+
+    }
 }
 
 void Engine::processInput() {
@@ -107,11 +122,25 @@ void Engine::processInput() {
 
     // If we're in the play screen and an arrow key is pressed, move the paddle
     // Hint: one of the indices is GLFW_KEY_UP
-    if (screen == easy or screen == normal or screen == hard) {
-        float speed = 300.0f * deltaTime;
+    if (screen == easy) {
+        float speed = 200.0f * deltaTime;
         // Make sure the paddle cannot go off the screen
         //if (keys[GLFW_KEY_UP] && paddle->getTop() < height) paddle->moveY(speed);
         //if (keys[GLFW_KEY_DOWN] && paddle->getBottom() > 0) paddle->moveY(-speed);
+
+        if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
+        if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
+
+    }
+    if (screen == normal) {
+        float speed = 300.0f * deltaTime;
+
+        if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
+        if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
+    }
+
+    if (screen == hard) {
+        float speed = 400.0f * deltaTime;
 
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
         if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
