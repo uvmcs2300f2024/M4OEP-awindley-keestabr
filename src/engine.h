@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_ENGINE_H
 #define GRAPHICS_ENGINE_H
 
+#include <ctime>
 #include <vector>
 #include <memory>
 #include <iostream>

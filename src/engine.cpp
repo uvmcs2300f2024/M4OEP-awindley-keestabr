@@ -69,6 +69,7 @@ void Engine::initShaders() {
 }
 
 void Engine::initShapes() {
+    srand(time(NULL));
     // red paddle at bottom middle of screen
     paddle = make_unique<Rect>(shapeShader, vec2{width / 2, height / 4}, vec2{200, 10}, color{1, 0, 0, 1});
     // red ball just above paddle
@@ -113,14 +114,16 @@ void Engine::initShapes() {
             y -= 50;
             if (y < 725 && y >= 675) {
                 currColor = color(.5,.9,0,1);
+                x = 900;
             }
             if (y < 675 && y >= 625) {
                 currColor = color(0,.5,.7,1);
+                x = 950;
             }
             if (y < 625 && y >= 575) {
                 currColor = color(.7,.3,.7,1);
+                x = 900;
             }
-            x = 950;
             --i;
         }
     }
@@ -153,35 +156,23 @@ void Engine::initShapes() {
     }
 
     // Create game state for random
-    x = 900;
+    x = 950;
     y = 725;
-    currColor = color(.7,0,.5,1);
-    for (int i = 0; i < 38; ++i) {
+    for (int i = 0; i < 40; ++i) {
         if (x > 25) {
-            if (rand() % 7 == 0) {
-                bricksRandom.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
+            if (rand() % 5 == 0) {
+                bricksRandom.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, color(float(rand() % 10 / 10.0), float(rand() % 10 / 10.0), float(rand() % 10 / 10.0),1)));
             }
             x -= 100;
         }
         else {
             y -= 50;
-            if (y < 725 && y >= 675) {
-                currColor = color(.5,.9,0,1);
-                x = 950;
-            }
-            if (y < 675 && y >= 625) {
-                currColor = color(0,.5,.7,1);
-                x = 900;
-            }
-            if (y < 625 && y >= 575) {
-                currColor = color(.7,.3,.7,1);
-                x = 950;
-            }
+            x = 950;
             --i;
         }
     }
     if (bricksRandom.size() == 0) {
-        bricksRandom.push_back(make_unique<Rect>(shapeShader, vec2{500, 750}, vec2{85, 40}, currColor));
+        bricksRandom.push_back(make_unique<Rect>(shapeShader, vec2{500, 750}, vec2{85, 40}, color(float(rand() % 10 / 10.0), float(rand() % 10 / 10.0), float(rand() % 10 / 10.0),1)));
     }
 }
 
@@ -413,6 +404,11 @@ void Engine::render() {
             paddle->setUniforms();
             paddle->draw();
 
+            for (int i = 0; i < bricksHard.size(); ++i) {
+                bricksHard[i]->setUniforms();
+                bricksHard[i]->draw();
+            }
+
             // Render font on top of spawn button
 //            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
             break;
@@ -430,6 +426,10 @@ void Engine::render() {
             paddle->setUniforms();
             paddle->draw();
 
+            for (int i = 0; i < bricksRandom.size(); ++i) {
+                bricksRandom[i]->setUniforms();
+                bricksRandom[i]->draw();
+            }
             // Render font on top of spawn button
 //            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
             break;
