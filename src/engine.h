@@ -47,6 +47,7 @@ private:
     vector<unique_ptr<Shape>> bricksEasy;
     vector<unique_ptr<Shape>> bricksNormal;
     vector<unique_ptr<Shape>> bricksHard;
+    vector<unique_ptr<Shape>> bricksRandom;
 
     // Shaders
     Shader shapeShader;

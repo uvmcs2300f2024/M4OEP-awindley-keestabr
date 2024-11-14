@@ -75,6 +75,7 @@ void Engine::initShapes() {
     //ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 2.5}, 2,color{1, 1, 1, 1});
     //ball->setVelocity(vec2{10, 100});
 
+    // Create game state for easy
     int x = 950;
     int y = 725;
     color currColor = color(.7,0,.5,1);
@@ -97,21 +98,13 @@ void Engine::initShapes() {
         }
     }
 
-    x = 900;
+    // Create game state for normal
+    x = 950;
     y = 725;
     currColor = color(.7,0,.5,1);
     for (int i = 0; i < 38; ++i) {
         if (x > 25) {
-            if (x % 3 == 0 ) {
-                bricksNormal.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
-            }
-            if (x % 8 == 0) {
-                bricksNormal.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
-            }
-            if (x % 7 == 0) {
-                bricksNormal.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
-            }
-            if (x % 9 == 0) {
+            if (i % 2 == 0) {
                 bricksNormal.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
             }
             x -= 100;
@@ -119,8 +112,33 @@ void Engine::initShapes() {
         else {
             y -= 50;
             if (y < 725 && y >= 675) {
-                x = 950;
                 currColor = color(.5,.9,0,1);
+            }
+            if (y < 675 && y >= 625) {
+                currColor = color(0,.5,.7,1);
+            }
+            if (y < 625 && y >= 575) {
+                currColor = color(.7,.3,.7,1);
+            }
+            x = 950;
+            --i;
+        }
+    }
+
+    // Create game state for hard
+    x = 900;
+    y = 725;
+    currColor = color(.7,0,.5,1);
+    for (int i = 0; i < 38; ++i) {
+        if (x > 25) {
+            bricksHard.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
+            x -= 100;
+        }
+        else {
+            y -= 50;
+            if (y < 725 && y >= 675) {
+                currColor = color(.5,.9,0,1);
+                x = 950;
             }
             if (y < 675 && y >= 625) {
                 currColor = color(0,.5,.7,1);
@@ -132,6 +150,38 @@ void Engine::initShapes() {
             }
             --i;
         }
+    }
+
+    // Create game state for random
+    x = 900;
+    y = 725;
+    currColor = color(.7,0,.5,1);
+    for (int i = 0; i < 38; ++i) {
+        if (x > 25) {
+            if (rand() % 7 == 0) {
+                bricksRandom.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
+            }
+            x -= 100;
+        }
+        else {
+            y -= 50;
+            if (y < 725 && y >= 675) {
+                currColor = color(.5,.9,0,1);
+                x = 950;
+            }
+            if (y < 675 && y >= 625) {
+                currColor = color(0,.5,.7,1);
+                x = 900;
+            }
+            if (y < 625 && y >= 575) {
+                currColor = color(.7,.3,.7,1);
+                x = 950;
+            }
+            --i;
+        }
+    }
+    if (bricksRandom.size() == 0) {
+        bricksRandom.push_back(make_unique<Rect>(shapeShader, vec2{500, 750}, vec2{85, 40}, currColor));
     }
 }
 
