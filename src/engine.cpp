@@ -313,6 +313,13 @@ void Engine::update() {
     if (ball->isOverlappingPaddle(*ball, *paddle)) {
         ball->bounce();
     }
+    for(const unique_ptr<Shape> &brick : bricksNormal) {
+        if (ball->isOverlappingPaddle(*ball, *brick)) {
+            ball->bounce();
+            brick->setPos(vec2{-1000,-1000});
+        }
+    }
+
     // End the game when the user spawns 100 confetti
     // If the size of the confetti vector reaches 100, change screen to over
 //    if (confetti.size() == 100) {
