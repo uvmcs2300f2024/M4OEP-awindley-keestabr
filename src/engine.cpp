@@ -1,6 +1,6 @@
 #include "engine.h"
 
-enum state {start, easy, normal, hard, random_, over};
+enum state {start, easy, normal, hard, random_, win, lose};
 state screen;
 
 // Colors
@@ -74,7 +74,7 @@ void Engine::initShapes() {
     paddle = make_unique<Rect>(shapeShader, vec2{width / 2, height / 4}, vec2{200, 10}, color{1, 0, 0, 1});
     // red ball just above paddle
     ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 2.5}, 2,color{1, 1, 1, 1});
-    ball->setVelocity(vec2{10, 100});
+    ball->setVelocity(vec2{20, 200});
 
     // Create game state for easy
     int x = 950;
@@ -242,33 +242,30 @@ void Engine::processInput() {
 
     }
 
-
-
     // Mouse position is inverted because the origin of the window is in the top left corner
     MouseY = height - MouseY; // Invert y-axis of mouse position
-    //bool buttonOverlapsMouse = paddle->isOverlapping(vec2(MouseX, MouseY));
-    //bool mousePressed = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
 
-    // When in play screen, if the user hovers or clicks on the button then change the paddle's color
-    // Hint: look at the color objects declared at the top of this file
     if (screen == easy) {
-//        if (buttonOverlapsMouse) {
-//            paddle->setColor(hoverFill);
-//            if (mousePressed) {
-//                paddle->setColor(pressFill);
-//            }
-//        } else { // Make sure the spawn button is its original color when the user is not hovering or clicking on it.
-//            paddle->setColor(originalFill);
-//        }
-
-        // When in play screen, if the button was released then spawn confetti
-        // Hint: the button was released if it was pressed last frame and is not pressed now
-//        if (mousePressedLastFrame && !mousePressed) {
-//            spawnConfetti();
-//        }
+        int counter = 0;
+        for (const unique_ptr<Shape> &brick : bricksEasy) {
+            if (brick->getPosX() == -1000)
+                counter++;
+        }
+        if (counter == bricksEasy.size()) {
+            screen = win;
+        }
     }
-    // Save mousePressed for next frame
-    //mousePressedLastFrame = mousePressed;
+
+    if (screen == normal) {
+        int counter = 0;
+        for (const unique_ptr<Shape> &brick : bricksNormal) {
+            if (brick->getPosX() == -1000)
+                counter++;
+        }
+        if (counter == bricksNormal.size()) {
+            screen = win;
+        }
+    }
 
 }
 
@@ -319,13 +316,6 @@ void Engine::update() {
             brick->setPos(vec2{-1000,-1000});
         }
     }
-
-    // End the game when the user spawns 100 confetti
-    // If the size of the confetti vector reaches 100, change screen to over
-//    if (confetti.size() == 100) {
-//        screen = over;
-//    }
-
 }
 
 void Engine::render() {
@@ -356,13 +346,7 @@ void Engine::render() {
             break;
         }
         case easy: {
-            //  call setUniforms and draw on the paddle and all of the confetti pieces
-            //  Hint: make sure you draw the spawn button after the confetti to make it appear on top
 
-//            for (const unique_ptr<Shape>& c : confetti) {
-//                c->setUniforms();
-//                c->draw();
-//            }
             ball->setUniforms();
             ball->draw();
             paddle->setUniforms();
@@ -372,18 +356,10 @@ void Engine::render() {
                 bricksEasy[i]->setUniforms();
                 bricksEasy[i]->draw();
             }
-            // Render font on top of spawn button
-//            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
             break;
         }
         case normal: {
-            //  call setUniforms and draw on the paddle and all of the confetti pieces
-            //  Hint: make sure you draw the spawn button after the confetti to make it appear on top
 
-//            for (const unique_ptr<Shape>& c : confetti) {
-//                c->setUniforms();
-//                c->draw();
-//            }
             ball->setUniforms();
             ball->draw();
             paddle->setUniforms();
@@ -393,19 +369,9 @@ void Engine::render() {
                 bricksNormal[i]->setUniforms();
                 bricksNormal[i]->draw();
             }
-
-            // Render font on top of spawn button
-//            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
             break;
         }
         case hard: {
-            //  call setUniforms and draw on the paddle and all of the confetti pieces
-            //  Hint: make sure you draw the spawn button after the confetti to make it appear on top
-
-//            for (const unique_ptr<Shape>& c : confetti) {
-//                c->setUniforms();
-//                c->draw();
-//            }
             ball->setUniforms();
             ball->draw();
             paddle->setUniforms();
@@ -415,21 +381,9 @@ void Engine::render() {
                 bricksHard[i]->setUniforms();
                 bricksHard[i]->draw();
             }
-
-            // Render font on top of spawn button
-//            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
             break;
         }
         case random_: {
-            //  call setUniforms and draw on the paddle and all of the confetti pieces
-            //  Hint: make sure you draw the spawn button after the confetti to make it appear on top
-
-//            for (const unique_ptr<Shape>& c : confetti) {
-//                c->setUniforms();
-//                c->draw();
-//            }
-            //ball->setUniforms();
-            //ball->draw();
             paddle->setUniforms();
             paddle->draw();
 
@@ -437,12 +391,16 @@ void Engine::render() {
                 bricksRandom[i]->setUniforms();
                 bricksRandom[i]->draw();
             }
-            // Render font on top of spawn button
-//            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
             break;
         }
-        case over: {
+        case win: {
             string message = "You win!";
+            // Display the message on the screen
+            this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
+            break;
+        }
+        case lose: {
+            string message = "You lose :(";
             // Display the message on the screen
             this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
             break;
@@ -451,16 +409,6 @@ void Engine::render() {
 
     glfwSwapBuffers(window);
 }
-
-//void Engine::spawnConfetti() {
-//    ++confettiCounter;
-//    vec2 pos = {rand() % (int)width, rand() % (int)height};
-//    //  Make each piece of confetti a different size, getting bigger with each spawn.
-//    //  The smallest should be a square of size 1 and the biggest should be a square of size 100
-//    vec2 size = {confettiCounter, confettiCounter}; // placeholder
-//    color color = {float(rand() % 10 / 10.0), float(rand() % 10 / 10.0), float(rand() % 10 / 10.0), 1.0f};
-//    confetti.push_back(make_unique<Rect>(shapeShader, pos, size, color));
-//}
 
 bool Engine::shouldClose() {
     return glfwWindowShouldClose(window);

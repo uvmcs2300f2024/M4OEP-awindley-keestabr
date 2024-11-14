@@ -97,6 +97,6 @@ void Circle::bounce() {
     float dotProduct = glm::dot(thisVelocity, delta) / (distance * distance);
     glm::vec2 collisionNormal = dotProduct * delta;
 
-    this->setVelocity(thisVelocity - (thisMass) * collisionNormal);
+    this->setVelocity(-thisVelocity);
     //other.setVelocity(otherVelocity + (2 * thisMass / totalMass) * collisionNormal);
 }
