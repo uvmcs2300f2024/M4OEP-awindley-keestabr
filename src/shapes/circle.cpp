@@ -50,8 +50,16 @@ bool Circle::isOverlapping(const Circle &c) const {
     return dist < radiusSum;
 }
 
-bool Circle::isOverlapping(const Rect &r) const {
-
+bool Circle::isOverlapping(const Circle &c, const Rect &r) {
+    if ((c.getRight() < r.getLeft()) || (r.getRight() < c.getLeft())) {
+        return false;
+    }
+    else if ((c.getBottom() > r.getTop()) || (r.getBottom() > c.getTop())) {
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 void Circle::bounce(Circle &other) {
