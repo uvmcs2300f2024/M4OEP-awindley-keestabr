@@ -24,7 +24,7 @@ private:
     GLFWwindow* window{};
 
     /// @brief The width and height of the window.
-    const unsigned int width = 800, height = 600; // Window dimensions
+    const unsigned int width = 1000, height = 800; // Window dimensions
     /// @brief The projection matrix
     const glm::mat4 projection = glm::ortho(0.0f, (float)width, 0.0f, (float)height);
 
@@ -44,7 +44,9 @@ private:
     // Shapes
     unique_ptr<Shape> paddle;
     unique_ptr<Circle> ball;
-//    vector<unique_ptr<Shape>> confetti;
+    vector<unique_ptr<Shape>> bricksEasy;
+    vector<unique_ptr<Shape>> bricksNormal;
+    vector<unique_ptr<Shape>> bricksHard;
 
     // Shaders
     Shader shapeShader;
