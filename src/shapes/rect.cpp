@@ -43,3 +43,33 @@ float Rect::getLeft() const        { return pos.x - (size.x / 2); }
 float Rect::getRight() const       { return pos.x + (size.x / 2); }
 float Rect::getTop() const         { return pos.y + (size.y / 2); }
 float Rect::getBottom() const      { return pos.y - (size.y / 2); }
+
+// Overridden isOverlapping from Shape
+bool Rect::isOverlapping(const Rect &r1, const Rect &r2) {
+    // Implement this method
+    // There are only two cases when rectangles are *not* overlapping:
+    //    1. when one is to the left of the other
+    //    2. when one is above the other
+    if ((r1.getRight() < r2.getLeft()) || (r2.getRight() < r1.getLeft())) {
+        return false;
+    }
+    else if ((r1.getBottom() > r2.getTop()) || (r2.getBottom() > r1.getTop())) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool Rect::isOverlapping(const Rect &other) const {
+    return isOverlapping(*this, other);
+}
+
+bool Rect::isOverlapping(const Shape &other) const {
+    // Dynamic cast to check if the other shape is a Rect
+    const Rect* otherRect = dynamic_cast<const Rect*>(&other);
+    if (otherRect) {
+        return isOverlapping(*this, *otherRect);
+    }
+    return false;
+}
