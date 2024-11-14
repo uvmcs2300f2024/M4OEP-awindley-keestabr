@@ -72,22 +72,66 @@ void Engine::initShapes() {
     // red paddle at bottom middle of screen
     paddle = make_unique<Rect>(shapeShader, vec2{width / 2, height / 4}, vec2{200, 10}, color{1, 0, 0, 1});
     // red ball just above paddle
-    ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 2.5}, 2,color{1, 1, 1, 1});
-    ball->setVelocity(vec2{10, 100});
+    //ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 2.5}, 2,color{1, 1, 1, 1});
+    //ball->setVelocity(vec2{10, 100});
 
-    int x = 925;
-    int y = 750;
-    for (int i = 0; i < 27; ++i) {
+    int x = 950;
+    int y = 725;
+    color currColor = color(.7,0,.5,1);
+    for (int i = 0; i < 29; ++i) {
         if (x > 25) {
-            bricksEasy.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{100, 50}, color(0, 0, 0, 1)));
+            bricksEasy.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
             x -= 100;
         }
         else {
             y -= 50;
-            x = 925;
+            if (y < 725 && y >= 675) {
+                x = 900;
+                currColor = color(.5,.9,0,1);
+            }
+            if (y < 675 && y >= 625) {
+                currColor = color(0,.5,.7,1);
+                x = 950;
+            }
             --i;
         }
+    }
 
+    x = 900;
+    y = 725;
+    currColor = color(.7,0,.5,1);
+    for (int i = 0; i < 38; ++i) {
+        if (x > 25) {
+            if (x % 3 == 0 ) {
+                bricksNormal.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
+            }
+            if (x % 8 == 0) {
+                bricksNormal.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
+            }
+            if (x % 7 == 0) {
+                bricksNormal.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
+            }
+            if (x % 9 == 0) {
+                bricksNormal.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, currColor));
+            }
+            x -= 100;
+        }
+        else {
+            y -= 50;
+            if (y < 725 && y >= 675) {
+                x = 950;
+                currColor = color(.5,.9,0,1);
+            }
+            if (y < 675 && y >= 625) {
+                currColor = color(0,.5,.7,1);
+                x = 900;
+            }
+            if (y < 625 && y >= 575) {
+                currColor = color(.7,.3,.7,1);
+                x = 950;
+            }
+            --i;
+        }
     }
 }
 
@@ -214,10 +258,10 @@ void Engine::update() {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    checkBounds(ball);
-    if (ball->isOverlapping(ball, paddle)) {
-        ball->bounce();
-    }
+    //checkBounds(ball);
+    //if (ball->isOverlapping(ball, paddle)) {
+    //    ball->bounce();
+    //}
     // End the game when the user spawns 100 confetti
     // If the size of the confetti vector reaches 100, change screen to over
 //    if (confetti.size() == 100) {
@@ -259,11 +303,15 @@ void Engine::render() {
 //                c->setUniforms();
 //                c->draw();
 //            }
-            ball->setUniforms();
-            ball->draw();
+            //ball->setUniforms();
+            //ball->draw();
             paddle->setUniforms();
             paddle->draw();
 
+            for (int i = 0; i < bricksEasy.size(); ++i) {
+                bricksEasy[i]->setUniforms();
+                bricksEasy[i]->draw();
+            }
             // Render font on top of spawn button
 //            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
             break;
@@ -276,10 +324,15 @@ void Engine::render() {
 //                c->setUniforms();
 //                c->draw();
 //            }
-            ball->setUniforms();
-            ball->draw();
+            //ball->setUniforms();
+            //ball->draw();
             paddle->setUniforms();
             paddle->draw();
+
+            for (int i = 0; i < bricksNormal.size(); ++i) {
+                bricksNormal[i]->setUniforms();
+                bricksNormal[i]->draw();
+            }
 
             // Render font on top of spawn button
 //            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
@@ -293,8 +346,8 @@ void Engine::render() {
 //                c->setUniforms();
 //                c->draw();
 //            }
-            ball->setUniforms();
-            ball->draw();
+            //ball->setUniforms();
+            //ball->draw();
             paddle->setUniforms();
             paddle->draw();
 
