@@ -2,6 +2,7 @@
 #define GRAPHICS_CIRCLE_H
 
 #include "shape.h"
+#include "rect.h"
 #include "../framework/shader.h"
 using std::vector, glm::vec2, glm::vec3, glm::normalize, glm::dot;
 
@@ -72,6 +73,10 @@ public:
     /// @brief Checks if two circles are overlapping
     /// @details This function is called in Engine's update function to check if any two circles are overlapping.
     bool isOverlapping(const Circle &c) const;
+
+    /// @brief Checks if a circle is overlapping a rectangle
+    /// @details This function is called in Engine's update function to check if any circle is overlapping the paddle.
+    bool isOverlapping(const Rect &r) const;
 
     /// @brief Handles the collision between two circles
     /// @details This function is called when two circles are overlapping (in Engine's update function).

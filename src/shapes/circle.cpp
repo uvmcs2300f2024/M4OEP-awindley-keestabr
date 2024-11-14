@@ -50,6 +50,10 @@ bool Circle::isOverlapping(const Circle &c) const {
     return dist < radiusSum;
 }
 
+bool Circle::isOverlapping(const Rect &r) const {
+
+}
+
 void Circle::bounce(Circle &other) {
     glm::vec2 delta = other.getPos() - this->getPos();
     float distance = glm::length(delta);
