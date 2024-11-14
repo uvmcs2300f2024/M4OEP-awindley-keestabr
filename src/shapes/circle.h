@@ -76,7 +76,7 @@ public:
 
     /// @brief Checks if a circle is overlapping a rectangle
     /// @details This function is called in Engine's update function to check if any circle is overlapping the paddle.
-    bool isOverlapping(const Rect &r) const;
+    bool isOverlapping(const Circle &c, const Rect &r);
 
     /// @brief Handles the collision between two circles
     /// @details This function is called when two circles are overlapping (in Engine's update function).
