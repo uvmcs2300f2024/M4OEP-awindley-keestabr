@@ -1,6 +1,6 @@
 #include "engine.h"
 
-enum state {start, play, over};
+enum state {start, easy, normal, hard, over};
 state screen;
 
 // Colors
@@ -70,9 +70,9 @@ void Engine::initShaders() {
 
 void Engine::initShapes() {
     // red paddle at bottom middle of screen
-    paddle = make_unique<Rect>(shapeShader, vec2{width / 2, height / 4}, vec2{100, 50}, color{1, 0, 0, 1});
+    paddle = make_unique<Rect>(shapeShader, vec2{width / 2, height / 4}, vec2{200, 10}, color{1, 0, 0, 1});
     // red ball just above paddle
-    ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 2.5}, 4,color{1, 0, 0, 1});
+    ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 2.5}, 2,color{1, 1, 1, 1});
     ball->setVelocity(vec2{10, 100});
 }
 
@@ -97,13 +97,17 @@ void Engine::processInput() {
     // If we're in the start screen and the user presses s, change screen to play
     // Hint: The index is GLFW_KEY_S
     if (screen == start) {
-        if (keys[GLFW_KEY_S])
-            screen = play;
+        if (keys[GLFW_KEY_E])
+            screen = easy;
+        if (keys[GLFW_KEY_N])
+            screen = normal;
+        if (keys[GLFW_KEY_H])
+            screen = hard;
     }
 
     // If we're in the play screen and an arrow key is pressed, move the paddle
     // Hint: one of the indices is GLFW_KEY_UP
-    if (screen == play) {
+    if (screen == easy or screen == normal or screen == hard) {
         float speed = 300.0f * deltaTime;
         // Make sure the paddle cannot go off the screen
         //if (keys[GLFW_KEY_UP] && paddle->getTop() < height) paddle->moveY(speed);
@@ -123,7 +127,7 @@ void Engine::processInput() {
 
     // When in play screen, if the user hovers or clicks on the button then change the paddle's color
     // Hint: look at the color objects declared at the top of this file
-    if (screen == play) {
+    if (screen == easy) {
 //        if (buttonOverlapsMouse) {
 //            paddle->setColor(hoverFill);
 //            if (mousePressed) {
@@ -203,16 +207,56 @@ void Engine::render() {
     // Render differently depending on screen
     switch (screen) {
         case start: {
-            string message = "Press s to start";
+            string message = "Choose a difficulty:";
+            string easy = "Easy (e)";
+            string normal = "Normal (n)";
+            string hard = "Hard (h)";
             // (12 * message.length()) is the offset to center text.
             // 12 pixels is the width of each character scaled by 1.
             // NOTE: This line changes the shader being used to the font shader.
             //  If you want to draw shapes again after drawing text,
             //  you'll need to call shapeShader.use() again first.
-            this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height - 200, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(easy, width/2 - (6 * message.length()), height - 300, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(normal, width/2 - (6 * message.length()), height - 350, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(hard, width/2 - (6 * message.length()), height - 400, projection, 1, vec3{1, 1, 1});
             break;
         }
-        case play: {
+        case easy: {
+            //  call setUniforms and draw on the paddle and all of the confetti pieces
+            //  Hint: make sure you draw the spawn button after the confetti to make it appear on top
+
+//            for (const unique_ptr<Shape>& c : confetti) {
+//                c->setUniforms();
+//                c->draw();
+//            }
+            ball->setUniforms();
+            ball->draw();
+            paddle->setUniforms();
+            paddle->draw();
+
+            // Render font on top of spawn button
+//            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
+            break;
+        }
+        case normal: {
+            //  call setUniforms and draw on the paddle and all of the confetti pieces
+            //  Hint: make sure you draw the spawn button after the confetti to make it appear on top
+
+//            for (const unique_ptr<Shape>& c : confetti) {
+//                c->setUniforms();
+//                c->draw();
+//            }
+            ball->setUniforms();
+            ball->draw();
+            paddle->setUniforms();
+            paddle->draw();
+
+            // Render font on top of spawn button
+//            fontRenderer->renderText("Spawn", paddle->getPos().x - 30, paddle->getPos().y - 5, projection, 0.5, vec3{1, 1, 1});
+            break;
+        }
+        case hard: {
             //  call setUniforms and draw on the paddle and all of the confetti pieces
             //  Hint: make sure you draw the spawn button after the confetti to make it appear on top
 
