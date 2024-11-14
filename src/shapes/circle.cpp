@@ -62,6 +62,15 @@ bool Circle::isOverlapping(const Circle &c, const Rect &r) {
     }
 }
 
+static bool Circle::isOverlapping(const Shape &other) const {
+    // Dynamic cast to check if the other shape is a Rect
+    const Circle* otherCircle = dynamic_cast<const Circle*>(&other);
+    if (otherCircle) {
+        return isOverlapping(*this, *otherCircle);
+    }
+    return false;
+}
+
 void Circle::bounce(Circle &other) {
     glm::vec2 delta = other.getPos() - this->getPos();
     float distance = glm::length(delta);

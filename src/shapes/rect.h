@@ -2,6 +2,7 @@
 #define GRAPHICS_RECT_H
 
 #include "shape.h"
+#include "circle.h"
 #include "../framework/shader.h"
 #include <iostream>
 using glm::vec2, glm::vec3;
