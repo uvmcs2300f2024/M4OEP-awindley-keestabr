@@ -71,12 +71,13 @@ void Engine::initShapes() {
     // red paddle at bottom middle of screen
     paddle = make_unique<Rect>(shapeShader, vec2{width / 2, height / 4}, vec2{200, 15}, color{1, 0, 0, 1});
     // red ball just above paddle
-    ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 2.5}, 2,color{1, 1, 1, 1});
-    ball->setVelocity(vec2{50, 500});
+    ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 3}, 2.25,color{1, 1, 1, 1});
+    ball->setVelocity(vec2{0, 0});
 
     // Create game state for easy
     int x = 950;
     int y = 725;
+    // change color for each subsequent line
     color currColor = color(.7,0,.5,1);
     for (int i = 0; i < 29; ++i) {
         if (x > 25) {
@@ -87,9 +88,11 @@ void Engine::initShapes() {
             y -= 50;
             if (y < 725 && y >= 675) {
                 x = 900;
+                // change color for each subsequent line
                 currColor = color(.5,.9,0,1);
             }
             if (y < 675 && y >= 625) {
+                // change color for each subsequent line
                 currColor = color(0,.5,.7,1);
                 x = 950;
             }
@@ -100,6 +103,7 @@ void Engine::initShapes() {
     // Create game state for normal
     x = 950;
     y = 725;
+    // change color for each subsequent line
     currColor = color(.7,0,.5,1);
     for (int i = 0; i < 38; ++i) {
         if (x > 25) {
@@ -111,14 +115,17 @@ void Engine::initShapes() {
         else {
             y -= 50;
             if (y < 725 && y >= 675) {
+                // change color for each subsequent line
                 currColor = color(.5,.9,0,1);
                 x = 900;
             }
             if (y < 675 && y >= 625) {
+                // change color for each subsequent line
                 currColor = color(0,.5,.7,1);
                 x = 950;
             }
             if (y < 625 && y >= 575) {
+                // change color for each subsequent line
                 currColor = color(.7,.3,.7,1);
                 x = 900;
             }
@@ -138,14 +145,17 @@ void Engine::initShapes() {
         else {
             y -= 50;
             if (y < 725 && y >= 675) {
+                // change color for each subsequent line
                 currColor = color(.5,.9,0,1);
                 x = 950;
             }
             if (y < 675 && y >= 625) {
+                // change color for each subsequent line
                 currColor = color(0,.5,.7,1);
                 x = 900;
             }
             if (y < 625 && y >= 575) {
+                // change color for each subsequent line
                 currColor = color(.7,.3,.7,1);
                 x = 950;
             }
@@ -158,7 +168,9 @@ void Engine::initShapes() {
     y = 725;
     for (int i = 0; i < 40; ++i) {
         if (x > 25) {
+            // a one in five chance to add each block to the vector
             if (rand() % 5 == 0) {
+                // add the brick with a random color
                 bricksRandom.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, color(float(rand() % 10 / 10.0), float(rand() % 10 / 10.0), float(rand() % 10 / 10.0),1)));
             }
             x -= 100;
@@ -169,6 +181,7 @@ void Engine::initShapes() {
             --i;
         }
     }
+    // if no bricks at all get added, add one brick
     if (bricksRandom.size() == 0) {
         bricksRandom.push_back(make_unique<Rect>(shapeShader, vec2{500, 750}, vec2{85, 40}, color(float(rand() % 10 / 10.0), float(rand() % 10 / 10.0), float(rand() % 10 / 10.0),1)));
     }
@@ -192,8 +205,7 @@ void Engine::processInput() {
     // Mouse position saved to check for collisions
     glfwGetCursorPos(window, &MouseX, &MouseY);
 
-    // If we're in the start screen and the user presses s, change screen to play
-    // Hint: The index is GLFW_KEY_S
+    // If we're in the start screen and press any of the modes; change screen to mode
     if (screen == start) {
         if (keys[GLFW_KEY_E])
             screen = easy;
@@ -205,19 +217,26 @@ void Engine::processInput() {
             screen = random_;
     }
 
-    // If we're in the play screen and an arrow key is pressed, move the paddle
-    // Hint: one of the indices is GLFW_KEY_UP
+    // if mouse is pressed
+    bool mousePressed = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
+
+    // If we're in the play screen and an arrow key is pressed, move the paddle and
     if (screen == easy) {
         float speed = 200.0f * deltaTime;
-        // Make sure the paddle cannot go off the screen
-        //if (keys[GLFW_KEY_UP] && paddle->getTop() < height) paddle->moveY(speed);
-        //if (keys[GLFW_KEY_DOWN] && paddle->getBottom() > 0) paddle->moveY(-speed);
+        // start the ball on click
+        if (mousePressed && ball->getVelocity() == vec2(0,0)) {
+            ball->setVelocity(vec2(0,300));
+        }
 
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
         if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
 
     }
     if (screen == normal) {
+        // start the ball on click
+        if (mousePressed && ball->getVelocity() == vec2(0,0)) {
+            ball->setVelocity(vec2(0,450));
+        }
         float speed = 300.0f * deltaTime;
 
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
@@ -225,6 +244,10 @@ void Engine::processInput() {
     }
 
     if (screen == hard) {
+        // start the ball on click
+        if (mousePressed && ball->getVelocity() == vec2(0,0)) {
+            ball->setVelocity(vec2(0,550));
+        }
         float speed = 400.0f * deltaTime;
 
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
@@ -233,6 +256,10 @@ void Engine::processInput() {
     }
 
     if (screen == random_) {
+        // start the ball on click
+        if (mousePressed && ball->getVelocity() == vec2(0,0)) {
+            ball->setVelocity(vec2(0,550));
+        }
         float speed = 400.0f * deltaTime;
 
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
@@ -307,14 +334,17 @@ void Engine::update() {
 
     checkBounds(ball);
     if (ball->isOverlappingPaddle(*ball, *paddle)) {
+        // add randomness so that the ball might bounce slightly left or right
         if (rand() % 3 == 0) {
-            ball->setVelocity(-ball->getVelocity());
+            ball->setVelocity(vec2(-1 * (ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])));
         }
+        // bounce slightly right
         if (rand() % 3 == 1) {
-            ball->setVelocity(vec2(-ball->getVelocity()[0] + (rand() % 50), -ball->getVelocity()[1]));
+            ball->setVelocity(vec2(-1 * (ball->getVelocity()[0]) + (rand() % 50), -1 * (ball->getVelocity()[1])));
         }
+        // bounce slightly right
         if (rand() % 3 == 2) {
-            ball->setVelocity(vec2(-ball->getVelocity()[0] - (rand() % 50), -ball->getVelocity()[1]));
+            ball->setVelocity(vec2(-1 * (ball->getVelocity()[0]) - (rand() % 50), -1 * (ball->getVelocity()[1])));
         }
     }
     for(const unique_ptr<Shape> &brick : bricksNormal) {
