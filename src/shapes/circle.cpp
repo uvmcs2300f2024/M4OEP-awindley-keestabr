@@ -76,6 +76,7 @@ bool Circle::isOverlapping(const Shape &other) const {
 //}
 
 void Circle::bounce() {
+    srand(time(NULL));
     glm::vec2 delta = this->getPos();
     float distance = glm::length(delta);
     //float overlap = 0.5f * (this->getRadius() - distance);
@@ -97,6 +98,14 @@ void Circle::bounce() {
     float dotProduct = glm::dot(thisVelocity, delta) / (distance * distance);
     glm::vec2 collisionNormal = dotProduct * delta;
 
-    this->setVelocity(-thisVelocity);
+    if (rand() % 3 == 0) {
+        this->setVelocity(-thisVelocity);
+    }
+    if (rand() % 3 == 1) {
+        this->setVelocity(vec2(-thisVelocity[0] + (rand() % 10),-thisVelocity[1]));
+    }
+    if (rand() % 3 == 2) {
+        this->setVelocity(vec2(-thisVelocity[0] - (rand() % 10),-thisVelocity[1]));
+    }
     //other.setVelocity(otherVelocity + (2 * thisMass / totalMass) * collisionNormal);
 }

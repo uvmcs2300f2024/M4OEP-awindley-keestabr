@@ -4,7 +4,7 @@ enum state {start, easy, normal, hard, random_, win, lose};
 state screen;
 
 // Colors
-color originalFill, hoverFill, pressFill;
+color originalFill;
 
 //int confettiCounter = 0; // counter for increasing confetti size
 
@@ -14,8 +14,6 @@ Engine::Engine() : keys() {
     this->initShapes();
 
     originalFill = {1, 0, 0, 1};
-    hoverFill.vec = originalFill.vec + vec4{0.5, 0.5, 0.5, 0};
-    pressFill.vec = originalFill.vec - vec4{0.5, 0.5, 0.5, 0};
 }
 
 Engine::~Engine() {}
@@ -71,10 +69,10 @@ void Engine::initShaders() {
 void Engine::initShapes() {
     srand(time(NULL));
     // red paddle at bottom middle of screen
-    paddle = make_unique<Rect>(shapeShader, vec2{width / 2, height / 4}, vec2{200, 10}, color{1, 0, 0, 1});
+    paddle = make_unique<Rect>(shapeShader, vec2{width / 2, height / 4}, vec2{200, 15}, color{1, 0, 0, 1});
     // red ball just above paddle
     ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 2.5}, 2,color{1, 1, 1, 1});
-    ball->setVelocity(vec2{20, 200});
+    ball->setVelocity(vec2{50, 500});
 
     // Create game state for easy
     int x = 950;
@@ -301,6 +299,7 @@ void Engine::checkBounds(unique_ptr<Circle> &ball) const {
 }
 
 void Engine::update() {
+    srand(time(NULL));
     // Calculate delta time
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
@@ -308,11 +307,20 @@ void Engine::update() {
 
     checkBounds(ball);
     if (ball->isOverlappingPaddle(*ball, *paddle)) {
-        ball->bounce();
+        if (rand() % 3 == 0) {
+            ball->setVelocity(-ball->getVelocity());
+        }
+        if (rand() % 3 == 1) {
+            ball->setVelocity(vec2(-ball->getVelocity()[0] + (rand() % 50), -ball->getVelocity()[1]));
+        }
+        if (rand() % 3 == 2) {
+            ball->setVelocity(vec2(-ball->getVelocity()[0] - (rand() % 50), -ball->getVelocity()[1]));
+        }
     }
     for(const unique_ptr<Shape> &brick : bricksNormal) {
         if (ball->isOverlappingPaddle(*ball, *brick)) {
-            ball->bounce();
+            //ball->bounce();
+            ball->setVelocity(-ball->getVelocity());
             brick->setPos(vec2{-1000,-1000});
         }
     }
