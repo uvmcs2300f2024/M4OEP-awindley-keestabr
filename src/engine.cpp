@@ -318,8 +318,6 @@ void Engine::checkBounds(unique_ptr<Circle> &ball) const {
         position.y = height - bubbleRadius;
         velocity.y = -velocity.y;
     }
-    // TODO: make ball bounce if touching top of paddle
-//    if (ball->getBottom() == )
 
     ball->setPos(position);
     ball->setVelocity(velocity);
@@ -335,15 +333,16 @@ void Engine::update() {
     checkBounds(ball);
     if (ball->isOverlappingPaddle(*ball, *paddle)) {
         // add randomness so that the ball might bounce slightly left or right
-        if (rand() % 3 == 0) {
+        int tempRand = rand() % 3;
+        if (tempRand >= 0  && tempRand < 1) {
             ball->setVelocity(vec2(-1 * (ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])));
         }
         // bounce slightly right
-        if (rand() % 3 == 1) {
+        if (tempRand >= 1 && tempRand < 2) {
             ball->setVelocity(vec2(-1 * (ball->getVelocity()[0]) + (rand() % 50), -1 * (ball->getVelocity()[1])));
         }
         // bounce slightly right
-        if (rand() % 3 == 2) {
+        if (tempRand >= 2 && tempRand <= 3) {
             ball->setVelocity(vec2(-1 * (ball->getVelocity()[0]) - (rand() % 50), -1 * (ball->getVelocity()[1])));
         }
     }
