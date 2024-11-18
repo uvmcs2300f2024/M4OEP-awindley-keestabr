@@ -222,6 +222,13 @@ void Engine::processInput() {
     && deathCounter == 3) {
         screen = lose;
     }
+    if ((screen == lose || screen == win)
+        && keys[GLFW_KEY_P]) {
+        ball->setVelocity(vec2{0,0});
+        ball->setPos(vec2{width / 2, height / 3});
+        deathCounter = 0;
+        screen = start;
+    }
 
     // if mouse is pressed
     bool mousePressed = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
@@ -344,25 +351,25 @@ void Engine::update() {
     if (screen == easy) {
         if (ball->isOverlappingPaddle(*ball, *paddle)) {
             // add randomness so that the ball might bounce slightly left or right
-            ball->setVelocity(vec2((ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])));
+            ball->setVelocity(vec2{(ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])});
         }
     }
     if (screen == normal) {
         if (ball->isOverlappingPaddle(*ball, *paddle)) {
             // add randomness so that the ball might bounce slightly left or right
-            ball->setVelocity(vec2((ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])));
+            ball->setVelocity(vec2{(ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])});
         }
     }
     if (screen == hard) {
         if (ball->isOverlappingPaddle(*ball, *paddle)) {
             // add randomness so that the ball might bounce slightly left or right
-            ball->setVelocity(vec2((ball->getVelocity()[0] + 5), -1 * (ball->getVelocity()[1] + 5)));
+            ball->setVelocity(vec2{(ball->getVelocity()[0] + 5), -1 * (ball->getVelocity()[1] + 5)});
         }
     }
     if (screen == random_) {
         if (ball->isOverlappingPaddle(*ball, *paddle)) {
             // add randomness so that the ball might bounce slightly left or right
-            ball->setVelocity(vec2((ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])));
+            ball->setVelocity(vec2{(ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])});
         }
     }
 
@@ -501,15 +508,19 @@ void Engine::render() {
             break;
         }
         case win: {
-            string message = "You win!";
+            string message1 = "You win!";
+            string message2 = "Press p to play again!";
             // Display the message on the screen
-            this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(message1, width/2 - (12 * message1.length()), height/2, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(message2, width/2 - (12 * message2.length()), height/2.5, projection, 1, vec3{1, 1, 1});
             break;
         }
         case lose: {
-            string message = "You lose :(";
+            string message1 = "You lose :(";
+            string message2 = "Press p to play again!";
             // Display the message on the screen
-            this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(message1, width/2 - (12 * message1.length()), height/2, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(message2, width/2 - (12 * message2.length()), height/2.5, projection, 1, vec3{1, 1, 1});
             break;
         }
     }
