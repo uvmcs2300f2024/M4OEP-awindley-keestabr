@@ -445,14 +445,18 @@ void Engine::render() {
                 bricksEasy[i]->draw();
             }
 
+            string message1 = "Death Counts: " + std::to_string(deathCounter);
+            // Display the message on the screen
+            this->fontRenderer->renderText(message1, 10, 20, projection, .5, vec3{1, 1, 1});
+
             string message = "Press space to start";
             if (ball->getVelocity() == vec2(0,0)) {
                 this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
             }
-            string message1 = "Death Counts: ";
-            // Display the message on the screen
-            this->fontRenderer->renderText(message1, 100 - (12 * message1.length()), 100, projection, 1, vec3{1, 1, 1});
+
             break;
+
+
         }
         case normal: {
 
@@ -465,6 +469,10 @@ void Engine::render() {
                 bricksNormal[i]->setUniforms();
                 bricksNormal[i]->draw();
             }
+
+            string message1 = "Death Counts: " + std::to_string(deathCounter);
+            // Display the message on the screen
+            this->fontRenderer->renderText(message1, 10, 20, projection, .5, vec3{1, 1, 1});
 
             string message = "Press space to start";
             if (ball->getVelocity() == vec2(0,0)) {
@@ -484,6 +492,10 @@ void Engine::render() {
                 bricksHard[i]->draw();
             }
 
+            string message1 = "Death Counts: " + std::to_string(deathCounter);
+            // Display the message on the screen
+            this->fontRenderer->renderText(message1, 10, 20, projection, .5, vec3{1, 1, 1});
+
             string message = "Press space to start";
             if (ball->getVelocity() == vec2(0,0)) {
                 this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
@@ -501,6 +513,10 @@ void Engine::render() {
                 bricksRandom[i]->setUniforms();
                 bricksRandom[i]->draw();
             }
+
+            string message1 = "Death Counts: " + std::to_string(deathCounter);
+            // Display the message on the screen
+            this->fontRenderer->renderText(message1, 10, 20, projection, .5, vec3{1, 1, 1});
 
             string message = "Press space to start";
             if (ball->getVelocity() == vec2(0,0)) {
