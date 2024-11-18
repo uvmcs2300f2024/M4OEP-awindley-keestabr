@@ -360,11 +360,27 @@ void Engine::update() {
         }
     }
 
-    for(const unique_ptr<Shape> &brick2 : bricksEasy) {
-        if (ball->isOverlappingPaddle(*ball, *brick2)) {
+    for(const unique_ptr<Shape> &brick : bricksEasy) {
+        if (ball->isOverlappingPaddle(*ball, *brick)) {
             //ball->bounce();
             ball->setVelocity(-ball->getVelocity());
-            brick2->setPos(vec2{-1000,-1000});
+            brick->setPos(vec2{-1000,-1000});
+        }
+    }
+
+    for(const unique_ptr<Shape> &brick : bricksHard) {
+        if (ball->isOverlappingPaddle(*ball, *brick)) {
+            //ball->bounce();
+            ball->setVelocity(-ball->getVelocity());
+            brick->setPos(vec2{-1000,-1000});
+        }
+    }
+
+    for(const unique_ptr<Shape> &brick : bricksRandom) {
+        if (ball->isOverlappingPaddle(*ball, *brick)) {
+            //ball->bounce();
+            ball->setVelocity(vec2{rand(), rand()});
+            brick->setPos(vec2{-1000,-1000});
         }
     }
 }
@@ -452,6 +468,8 @@ void Engine::render() {
             break;
         }
         case random_: {
+            ball->setUniforms();
+            ball->draw();
             paddle->setUniforms();
             paddle->draw();
 
