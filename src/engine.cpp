@@ -351,7 +351,7 @@ void Engine::update() {
     if (screen == hard) {
         if (ball->isOverlappingPaddle(*ball, *paddle)) {
             // add randomness so that the ball might bounce slightly left or right
-            ball->setVelocity(vec2((ball->getVelocity()[0]), -1 * (ball->getVelocity()[1] + 5)));
+            ball->setVelocity(vec2((ball->getVelocity()[0] + 5), -1 * (ball->getVelocity()[1] + 5)));
         }
     }
     if (screen == random_) {
