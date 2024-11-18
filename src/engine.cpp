@@ -364,43 +364,12 @@ void Engine::update() {
     }
     if (screen == normal) {
         if (ball->isOverlappingPaddle(*ball, *paddle)) {
-            // add randomness so that the ball might bounce slightly left or right
-            if (ball->getPosX() > paddle->getPosX()) {
-                int tempRand = rand();
-                if (tempRand % 2 == 0) {
-                    if (rand() % 2 == 0) {
-                        ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) - rand() % 80, -1 * (ball->getVelocity()[1])});
-                    }
-                    else {
-                        ball->setVelocity(vec2{(ball->getVelocity()[0]) - rand() % 80, -1 * (ball->getVelocity()[1])});
-                    }                }
-                else {
-                    if (rand() % 2 == 0) {
-                        ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) + rand() % 80, -1 * (ball->getVelocity()[1])});
-                    }
-                    else {
-                        ball->setVelocity(vec2{(ball->getVelocity()[0]) + rand() % 80, -1 * (ball->getVelocity()[1])});
-                    }
-                }
+            // add randomness so that the ball might bounce at a slightly different angle
+            if (rand() % 2 == 0) {
+                ball->setVelocity(vec2{(ball->getVelocity()[0]) - (rand() % 120), -1 * (ball->getVelocity()[1])});
             }
-            if (ball->getPosX() < paddle->getPosX()) {
-                int tempRand = rand();
-                if (tempRand % 2 == 0) {
-                    if (rand() % 2 == 0) {
-                        ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) - rand() % 80, -1 * (ball->getVelocity()[1])});
-                    }
-                    else {
-                        ball->setVelocity(vec2{(ball->getVelocity()[0]) - rand() % 80, -1 * (ball->getVelocity()[1])});
-                    }
-                }
-                else {
-                    if (rand() % 2 == 0) {
-                        ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) + rand() % 80, -1 * (ball->getVelocity()[1])});
-                    }
-                    else {
-                        ball->setVelocity(vec2{(ball->getVelocity()[0]) + rand() % 80, -1 * (ball->getVelocity()[1])});
-                    }
-                }
+            else {
+                ball->setVelocity(vec2{(ball->getVelocity()[0]) + (rand() % 120), -1 * (ball->getVelocity()[1])});
             }
         }
         for(const unique_ptr<Shape> &brick : bricksNormal) {
