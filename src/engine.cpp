@@ -366,7 +366,6 @@ void Engine::update() {
             // add randomness so that the ball might bounce slightly left or right
             if (ball->getPosX() > paddle->getPosX()) {
                 int tempRand = rand();
-                cout << tempRand;
                 if (tempRand % 2 == 0) {
                     if (rand() % 2 == 0) {
                         ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) - rand() % 80, -1 * (ball->getVelocity()[1])});
