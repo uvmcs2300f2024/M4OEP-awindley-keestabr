@@ -7,6 +7,7 @@ state screen;
 color originalFill;
 
 //int confettiCounter = 0; // counter for increasing confetti size
+int deathCounter = 0;
 
 Engine::Engine() : keys() {
     this->initWindow();
@@ -217,10 +218,10 @@ void Engine::processInput() {
             screen = random_;
     }
 
-//    if ((screen == easy || screen == normal || screen == hard || screen == random_)
-//    && deathCounter == 3) {
-//        screen = lose;
-//    }
+    if ((screen == easy || screen == normal || screen == hard || screen == random_)
+    && deathCounter == 3) {
+        screen = lose;
+    }
 
     // if mouse is pressed
     bool mousePressed = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
@@ -310,18 +311,22 @@ void Engine::checkBounds(unique_ptr<Circle> &ball) const {
     if (position.x - bubbleRadius <= 0) {
         position.x = bubbleRadius;
         velocity.x = -velocity.x;
+        deathCounter++;
     }
     if (position.x + bubbleRadius >= width) {
         position.x = width - bubbleRadius;
         velocity.x = -velocity.x;
+        deathCounter++;
     }
     if (position.y - bubbleRadius <= 0) {
         position.y = bubbleRadius;
         velocity.y = -velocity.y;
+        deathCounter++;
     }
     if (position.y + bubbleRadius >= height) {
         position.y = height - bubbleRadius;
         velocity.y = -velocity.y;
+        deathCounter++;
     }
 
     ball->setPos(position);
