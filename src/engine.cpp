@@ -221,6 +221,7 @@ void Engine::processInput() {
     if ((screen == easy || screen == normal || screen == hard || screen == random_)
     && deathCounter == 3) {
         screen = lose;
+        initShapes();
     }
     if ((screen == lose || screen == win)
         && keys[GLFW_KEY_P]) {
