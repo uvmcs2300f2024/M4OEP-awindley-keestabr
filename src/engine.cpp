@@ -190,6 +190,7 @@ void Engine::initShapes() {
 
 void Engine::processInput() {
     glfwPollEvents();
+    srand(time(NULL));
 
     // Set keys to true if pressed, false if released
     for (int key = 0; key < 1024; ++key) {
@@ -218,11 +219,13 @@ void Engine::processInput() {
             screen = random_;
     }
 
+    // if three deaths you lose and reset blocks for all levels
     if ((screen == easy || screen == normal || screen == hard || screen == random_)
     && deathCounter == 3) {
         screen = lose;
         initShapes();
     }
+    // if you win or lose; reset ball and blocks and press p to start over
     if ((screen == lose || screen == win)
         && keys[GLFW_KEY_P]) {
         ball->setVelocity(vec2{0,0});
@@ -240,7 +243,12 @@ void Engine::processInput() {
         float speed = 300.0f * deltaTime;
         // start the ball on click
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
-            ball->setVelocity(vec2(-150,300));
+            if (rand() % 2 == 0) {
+                ball->setVelocity(vec2(-(rand() % 150), 300));
+            }
+            else {
+                ball->setVelocity(vec2((rand() % 150), 300));
+            }
         }
 
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
@@ -250,7 +258,12 @@ void Engine::processInput() {
     if (screen == normal) {
         // start the ball on click
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
-            ball->setVelocity(vec2(-300,450));
+            if (rand() % 2 == 0) {
+                ball->setVelocity(vec2(-(rand() % 200), 450));
+            }
+            else {
+                ball->setVelocity(vec2((rand() % 200), 450));
+            }
         }
         float speed = 300.0f * deltaTime;
 
@@ -261,7 +274,12 @@ void Engine::processInput() {
     if (screen == hard) {
         // start the ball on click
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
-            ball->setVelocity(vec2(-400,550));
+            if (rand() % 2 == 0) {
+                ball->setVelocity(vec2(-(rand() % 250), 550));
+            }
+            else {
+                ball->setVelocity(vec2((rand() % 250), 550));
+            }
         }
         float speed = 400.0f * deltaTime;
 
@@ -273,7 +291,12 @@ void Engine::processInput() {
     if (screen == random_) {
         // start the ball on click
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
-            ball->setVelocity(vec2(-400,550));
+            if (rand() % 2 == 0) {
+                ball->setVelocity(vec2(-(rand() % 300), 550));
+            }
+            else {
+                ball->setVelocity(vec2((rand() % 300), 550));
+            }
         }
         float speed = 400.0f * deltaTime;
 
@@ -453,10 +476,7 @@ void Engine::render() {
             if (ball->getVelocity() == vec2(0,0)) {
                 this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
             }
-
             break;
-
-
         }
         case normal: {
 
@@ -478,7 +498,6 @@ void Engine::render() {
             if (ball->getVelocity() == vec2(0,0)) {
                 this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
             }
-
             break;
         }
         case hard: {
@@ -500,7 +519,6 @@ void Engine::render() {
             if (ball->getVelocity() == vec2(0,0)) {
                 this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
             }
-
             break;
         }
         case random_: {
@@ -522,27 +540,29 @@ void Engine::render() {
             if (ball->getVelocity() == vec2(0,0)) {
                 this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
             }
-
             break;
         }
         case win: {
-            string message1 = "You win!";
+            string message1 = "You win :)";
             string message2 = "Press p to play again!";
+            string message3 = "Press esc to quit!";
             // Display the message on the screen
             this->fontRenderer->renderText(message1, width/2 - (12 * message1.length()), height/2, projection, 1, vec3{1, 1, 1});
             this->fontRenderer->renderText(message2, width/2 - (12 * message2.length()), height/2.5, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(message3, width/2 - (12 * message3.length()), height/2.75, projection, 1, vec3{1, 1, 1});
             break;
         }
         case lose: {
             string message1 = "You lose :(";
             string message2 = "Press p to play again!";
+            string message3 = "Press esc to quit!";
             // Display the message on the screen
             this->fontRenderer->renderText(message1, width/2 - (12 * message1.length()), height/2, projection, 1, vec3{1, 1, 1});
             this->fontRenderer->renderText(message2, width/2 - (12 * message2.length()), height/2.5, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(message3, width/2 - (12 * message3.length()), height/2.75, projection, 1, vec3{1, 1, 1});
             break;
         }
     }
-
     glfwSwapBuffers(window);
 }
 
