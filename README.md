@@ -22,3 +22,5 @@ screen.
 
 * We think we have earned 120 points as we not only fulfilled every major requirement, but we
 also added many screens and have decently complicated math on brick placement and ball velocity.
+
+Hopefully we made you laugh with our dumb video! :)
