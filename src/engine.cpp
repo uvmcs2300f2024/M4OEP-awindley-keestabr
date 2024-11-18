@@ -341,7 +341,7 @@ void Engine::update() {
         if (tempRand >= 1 && tempRand < 2) {
             ball->setVelocity(vec2(-1 * (ball->getVelocity()[0]) + (rand() % 50), -1 * (ball->getVelocity()[1])));
         }
-        // bounce slightly right
+        // bounce slightly left
         if (tempRand >= 2 && tempRand <= 3) {
             ball->setVelocity(vec2(-1 * (ball->getVelocity()[0]) - (rand() % 50), -1 * (ball->getVelocity()[1])));
         }
