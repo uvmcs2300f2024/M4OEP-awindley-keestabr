@@ -224,7 +224,7 @@ void Engine::processInput() {
     if (screen == easy) {
         float speed = 200.0f * deltaTime;
         // start the ball on click
-        if (mousePressed && ball->getVelocity() == vec2(0,0)) {
+        if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
             ball->setVelocity(vec2(-150,300));
         }
 
@@ -234,7 +234,7 @@ void Engine::processInput() {
     }
     if (screen == normal) {
         // start the ball on click
-        if (mousePressed && ball->getVelocity() == vec2(0,0)) {
+        if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
             ball->setVelocity(vec2(0,450));
         }
         float speed = 300.0f * deltaTime;
@@ -245,7 +245,7 @@ void Engine::processInput() {
 
     if (screen == hard) {
         // start the ball on click
-        if (mousePressed && ball->getVelocity() == vec2(0,0)) {
+        if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
             ball->setVelocity(vec2(0,550));
         }
         float speed = 400.0f * deltaTime;
@@ -257,7 +257,7 @@ void Engine::processInput() {
 
     if (screen == random_) {
         // start the ball on click
-        if (mousePressed && ball->getVelocity() == vec2(0,0)) {
+        if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
             ball->setVelocity(vec2(0,550));
         }
         float speed = 400.0f * deltaTime;
@@ -384,7 +384,6 @@ void Engine::render() {
             break;
         }
         case easy: {
-
             ball->setUniforms();
             ball->draw();
             paddle->setUniforms();
@@ -394,6 +393,12 @@ void Engine::render() {
                 bricksEasy[i]->setUniforms();
                 bricksEasy[i]->draw();
             }
+
+            string message = "Press space to start";
+            if (ball->getVelocity() == vec2(0,0)) {
+                this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
+            }
+
             break;
         }
         case normal: {
@@ -407,6 +412,12 @@ void Engine::render() {
                 bricksNormal[i]->setUniforms();
                 bricksNormal[i]->draw();
             }
+
+            string message = "Press space to start";
+            if (ball->getVelocity() == vec2(0,0)) {
+                this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
+            }
+
             break;
         }
         case hard: {
@@ -419,6 +430,12 @@ void Engine::render() {
                 bricksHard[i]->setUniforms();
                 bricksHard[i]->draw();
             }
+
+            string message = "Press space to start";
+            if (ball->getVelocity() == vec2(0,0)) {
+                this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
+            }
+
             break;
         }
         case random_: {
@@ -429,6 +446,12 @@ void Engine::render() {
                 bricksRandom[i]->setUniforms();
                 bricksRandom[i]->draw();
             }
+
+            string message = "Press space to start";
+            if (ball->getVelocity() == vec2(0,0)) {
+                this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
+            }
+
             break;
         }
         case win: {
