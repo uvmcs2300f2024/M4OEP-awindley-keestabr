@@ -366,21 +366,12 @@ void Engine::update() {
             // add randomness so that the ball might bounce slightly left or right
             if (ball->getPosX() > paddle->getPosX()) {
                 int tempRand = rand();
-                if (tempRand == 0) {
-                    ball->setVelocity(vec2{(ball->getVelocity()[0]) - rand() % 50, -1 * (ball->getVelocity()[1])});
-                }
-                if (tempRand == 1) {
-                    ball->setVelocity(vec2{(ball->getVelocity()[0]) + rand() % 50, -1 * (ball->getVelocity()[1])});
+                if (tempRand % 2 == 0) {
+                    ball->setVelocity(vec2{(ball->getVelocity()[0]) - rand() % 100, -1 * (ball->getVelocity()[1])});
                 }
             }
             if (ball->getPosX() < paddle->getPosX()) {
-                int tempRand = rand();
-                if (tempRand == 0) {
-                    ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) - rand() % 50, -1 * (ball->getVelocity()[1])});
-                }
-                if (tempRand == 1) {
-                    ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) + rand() % 50, -1 * (ball->getVelocity()[1])});
-                }
+                ball->setVelocity(vec2{(-1 * ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])});
             }
         }
         for(const unique_ptr<Shape> &brick : bricksNormal) {
