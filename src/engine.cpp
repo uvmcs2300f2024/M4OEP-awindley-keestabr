@@ -368,19 +368,37 @@ void Engine::update() {
                 int tempRand = rand();
                 cout << tempRand;
                 if (tempRand % 2 == 0) {
-                    ball->setVelocity(vec2{(ball->getVelocity()[0]) - tempRand % 50, -1 * (ball->getVelocity()[1])});
-                }
+                    if (rand() % 2 == 0) {
+                        ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) - tempRand % 50, -1 * (ball->getVelocity()[1])});
+                    }
+                    if (rand() % 2 == 1) {
+                        ball->setVelocity(vec2{(ball->getVelocity()[0]) - tempRand % 50, -1 * (ball->getVelocity()[1])});
+                    }                }
                 else {
-                    ball->setVelocity(vec2{(ball->getVelocity()[0]) + tempRand % 50, -1 * (ball->getVelocity()[1])});
+                    if (rand() % 2 == 0) {
+                        ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) + tempRand % 50, -1 * (ball->getVelocity()[1])});
+                    }
+                    if (rand() % 2 == 1) {
+                        ball->setVelocity(vec2{(ball->getVelocity()[0]) + tempRand % 50, -1 * (ball->getVelocity()[1])});
+                    }
                 }
             }
             if (ball->getPosX() < paddle->getPosX()) {
                 int tempRand = rand();
                 if (tempRand % 2 == 0) {
-                    ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) - tempRand % 50, -1 * (ball->getVelocity()[1])});
-                }
-                if (tempRand % 2 == 1) {
-                    ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) + tempRand % 50, -1 * (ball->getVelocity()[1])});
+                    if (rand() % 2 == 0) {
+                        ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) - tempRand % 50, -1 * (ball->getVelocity()[1])});
+                    }
+                    if (rand() % 2 == 1) {
+                        ball->setVelocity(vec2{(ball->getVelocity()[0]) - tempRand % 50, -1 * (ball->getVelocity()[1])});
+                    }                    }
+                else {
+                    if (rand() % 2 == 0) {
+                        ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) + tempRand % 50, -1 * (ball->getVelocity()[1])});
+                    }
+                    if (rand() % 2 == 1) {
+                        ball->setVelocity(vec2{(ball->getVelocity()[0]) + tempRand % 50, -1 * (ball->getVelocity()[1])});
+                    }
                 }
             }
         }
