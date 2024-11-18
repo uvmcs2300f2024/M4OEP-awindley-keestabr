@@ -6,7 +6,6 @@ state screen;
 // Colors
 color originalFill;
 
-//int confettiCounter = 0; // counter for increasing confetti size
 int deathCounter = 0;
 
 Engine::Engine() : keys() {
@@ -51,7 +50,7 @@ unsigned int Engine::initWindow(bool debug) {
 }
 
 void Engine::initShaders() {
-    // load shader manager
+    // Load shader manager
     shaderManager = make_unique<ShaderManager>();
 
     // Load shader into shader manager and retrieve it
@@ -69,16 +68,16 @@ void Engine::initShaders() {
 
 void Engine::initShapes() {
     srand(time(NULL));
-    // red paddle at bottom middle of screen
+    // Red paddle at bottom middle of screen
     paddle = make_unique<Rect>(shapeShader, vec2{width / 2, height / 4}, vec2{200, 15}, color{1, 0, 0, 1});
-    // white ball just above paddle
+    // White ball just above paddle
     ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 3}, 2.25,color{1, 1, 1, 1});
     ball->setVelocity(vec2{0, 0});
 
     // Create game state for easy
     int x = 950;
     int y = 725;
-    // change color for each subsequent line
+    // Change color for each subsequent line
     color currColor = color(.7,0,.5,1);
     for (int i = 0; i < 29; ++i) {
         if (x > 25) {
@@ -86,15 +85,15 @@ void Engine::initShapes() {
             x -= 100;
         }
         else {
-            // else block for changing color based off of y position
+            // Else block for changing color based off of y position
             y -= 50;
             if (y < 725 && y >= 675) {
                 x = 900;
-                // change color for each subsequent line
+                // Change color for each subsequent line
                 currColor = color(.5,.9,0,1);
             }
             if (y < 675 && y >= 625) {
-                // change color for each subsequent line
+                // Change color for each subsequent line
                 currColor = color(0,.5,.7,1);
                 x = 950;
             }
@@ -105,7 +104,7 @@ void Engine::initShapes() {
     // Create game state for normal
     x = 950;
     y = 725;
-    // change color for each subsequent line
+    // Change color for each subsequent line
     currColor = color(.7,0,.5,1);
     for (int i = 0; i < 38; ++i) {
         if (x > 25) {
@@ -115,20 +114,20 @@ void Engine::initShapes() {
             x -= 100;
         }
         else {
-            // else block for changing color based off of y position
+            // Else block for changing color based off of y position
             y -= 50;
             if (y < 725 && y >= 675) {
-                // change color for each subsequent line
+                // Change color for each subsequent line
                 currColor = color(.5,.9,0,1);
                 x = 900;
             }
             if (y < 675 && y >= 625) {
-                // change color for each subsequent line
+                // Change color for each subsequent line
                 currColor = color(0,.5,.7,1);
                 x = 950;
             }
             if (y < 625 && y >= 575) {
-                // change color for each subsequent line
+                // Change color for each subsequent line
                 currColor = color(.7,.3,.7,1);
                 x = 900;
             }
@@ -146,20 +145,20 @@ void Engine::initShapes() {
             x -= 100;
         }
         else {
-            // else block for changing color based off of y position
+            // Else block for changing color based off of y position
             y -= 50;
             if (y < 725 && y >= 675) {
-                // change color for each subsequent line
+                // Change color for each subsequent line
                 currColor = color(.5,.9,0,1);
                 x = 950;
             }
             if (y < 675 && y >= 625) {
-                // change color for each subsequent line
+                // Change color for each subsequent line
                 currColor = color(0,.5,.7,1);
                 x = 900;
             }
             if (y < 625 && y >= 575) {
-                // change color for each subsequent line
+                // Change color for each subsequent line
                 currColor = color(.7,.3,.7,1);
                 x = 950;
             }
@@ -172,21 +171,21 @@ void Engine::initShapes() {
     y = 725;
     for (int i = 0; i < 40; ++i) {
         if (x > 25) {
-            // a one in five chance to add each block to the vector
+            // A one in five chance to add each block to the vector
             if (rand() % 5 == 0) {
-                // add the brick with a random color
+                // Add the brick with a random color
                 bricksRandom.push_back(make_unique<Rect>(shapeShader, vec2{x, y}, vec2{85, 40}, color(float(rand() % 10 / 10.0), float(rand() % 10 / 10.0), float(rand() % 10 / 10.0),1)));
             }
             x -= 100;
         }
         else {
-            // decrement y position and reset x to the left
+            // Decrement y position and reset x to the left
             y -= 50;
             x = 950;
             --i;
         }
     }
-    // if no bricks at all get added, add one brick
+    // If no bricks at all get added, add one brick
     if (bricksRandom.size() == 0) {
         bricksRandom.push_back(make_unique<Rect>(shapeShader, vec2{500, 750}, vec2{85, 40}, color(float(rand() % 10 / 10.0), float(rand() % 10 / 10.0), float(rand() % 10 / 10.0),1)));
     }
@@ -223,13 +222,13 @@ void Engine::processInput() {
             screen = random_;
     }
 
-    // if three deaths you lose and reset blocks for all levels
+    // If three deaths you lose and reset blocks for all levels
     if ((screen == easy || screen == normal || screen == hard || screen == random_)
     && deathCounter == 3) {
         screen = lose;
         initShapes();
     }
-    // if you win or lose; reset ball and blocks and press p to start over
+    // If you win or lose; reset ball and blocks and press p to start over
     if ((screen == lose || screen == win)
         && keys[GLFW_KEY_P]) {
         ball->setVelocity(vec2{0,0});
