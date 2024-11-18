@@ -256,6 +256,8 @@ void Engine::processInput() {
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
         if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
 
+        // set paddle color to green for easy:
+        paddle->setColor(color(0,1,0,1));
     }
     if (screen == normal) {
         // start the ball on press of space
@@ -273,6 +275,9 @@ void Engine::processInput() {
         // paddle will move left and right with arrow keys at different speeds for each mode
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
         if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
+
+        // set paddle color to yellow for normal:
+        paddle->setColor(color(1,1,0,1));
     }
 
     if (screen == hard) {
@@ -291,6 +296,8 @@ void Engine::processInput() {
         // paddle will move left and right with arrow keys at different speeds for each mode
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
         if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
+
+        // leave paddle color red for hard
     }
 
     if (screen == random_) {
@@ -310,6 +317,8 @@ void Engine::processInput() {
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
         if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
 
+        // set paddle to a random color every loop for random:
+        paddle->setColor(color(float(rand() % 10 / 10.0), float(rand() % 10 / 10.0), float(rand() % 10 / 10.0),1));
     }
 
     // Mouse position is inverted because the origin of the window is in the top left corner
