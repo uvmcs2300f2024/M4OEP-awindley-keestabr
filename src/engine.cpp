@@ -241,7 +241,7 @@ void Engine::processInput() {
     if (screen == normal) {
         // start the ball on click
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
-            ball->setVelocity(vec2(-300,450));
+            ball->setVelocity(vec2(0,450));
         }
         float speed = 300.0f * deltaTime;
 
@@ -252,7 +252,7 @@ void Engine::processInput() {
     if (screen == hard) {
         // start the ball on click
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
-            ball->setVelocity(vec2(-400,550));
+            ball->setVelocity(vec2(0,550));
         }
         float speed = 400.0f * deltaTime;
 
@@ -264,7 +264,7 @@ void Engine::processInput() {
     if (screen == random_) {
         // start the ball on click
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
-            ball->setVelocity(vec2(-400,550));
+            ball->setVelocity(vec2(0,550));
         }
         float speed = 400.0f * deltaTime;
 
@@ -341,22 +341,32 @@ void Engine::update() {
     lastFrame = currentFrame;
 
     checkBounds(ball);
-    if (ball->isOverlappingPaddle(*ball, *paddle)) {
-        // add randomness so that the ball might bounce slightly left or right
-        int tempRand = rand() % 3;
-//        if (tempRand >= 0  && tempRand < 1) {
-//            ball->setVelocity(vec2(-1 * (ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])));
-//        }
-        ball->setVelocity(vec2((ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])));
-        // bounce slightly right
-//        if (tempRand >= 1 && tempRand < 2) {
-//            ball->setVelocity(vec2(-1 * (ball->getVelocity()[0]) + (rand() % 50), -1 * (ball->getVelocity()[1])));
-//        }
-//        // bounce slightly left
-//        if (tempRand >= 2 && tempRand <= 3) {
-//            ball->setVelocity(vec2(-1 * (ball->getVelocity()[0]) - (rand() % 50), -1 * (ball->getVelocity()[1])));
-//        }
+    if (screen == easy) {
+        if (ball->isOverlappingPaddle(*ball, *paddle)) {
+            // add randomness so that the ball might bounce slightly left or right
+            ball->setVelocity(vec2((ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])));
+        }
     }
+    if (screen == normal) {
+        if (ball->isOverlappingPaddle(*ball, *paddle)) {
+            // add randomness so that the ball might bounce slightly left or right
+            ball->setVelocity(vec2((ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])));
+        }
+    }
+    if (screen == hard) {
+        if (ball->isOverlappingPaddle(*ball, *paddle)) {
+            // add randomness so that the ball might bounce slightly left or right
+            ball->setVelocity(vec2((ball->getVelocity()[0]), -1 * (ball->getVelocity()[1] + 5)));
+        }
+    }
+    if (screen == random_) {
+        if (ball->isOverlappingPaddle(*ball, *paddle)) {
+            // add randomness so that the ball might bounce slightly left or right
+            ball->setVelocity(vec2((ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])));
+        }
+    }
+
+
     for(const unique_ptr<Shape> &brick : bricksNormal) {
         if (ball->isOverlappingPaddle(*ball, *brick)) {
             //ball->bounce();
@@ -384,7 +394,7 @@ void Engine::update() {
     for(const unique_ptr<Shape> &brick : bricksRandom) {
         if (ball->isOverlappingPaddle(*ball, *brick)) {
             //ball->bounce();
-            ball->setVelocity(vec2{rand(), rand()});
+            ball->setVelocity(-ball->getVelocity());
             brick->setPos(vec2{-1000,-1000});
         }
     }
