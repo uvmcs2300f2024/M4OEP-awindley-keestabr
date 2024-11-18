@@ -221,6 +221,7 @@ void Engine::processInput() {
     if ((screen == easy || screen == normal || screen == hard || screen == random_)
     && deathCounter == 3) {
         screen = lose;
+        initShapes();
     }
     if ((screen == lose || screen == win)
         && keys[GLFW_KEY_P]) {
@@ -326,9 +327,9 @@ void Engine::checkBounds(unique_ptr<Circle> &ball) const {
     if (position.y - bubbleRadius <= 0) {
         position.y = bubbleRadius;
         velocity.y = -velocity.y;
-        deathCounter++;
         ball->setVelocity(vec2{0,0});
         ball->setPos(vec2{width / 2, height / 3});
+        deathCounter++;
     }
     if (position.y + bubbleRadius >= height) {
         position.y = height - bubbleRadius;
