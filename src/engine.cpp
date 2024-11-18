@@ -364,11 +364,15 @@ void Engine::update() {
     if (screen == normal) {
         if (ball->isOverlappingPaddle(*ball, *paddle)) {
             // add randomness so that the ball might bounce slightly left or right
-            ball->setVelocity(vec2{(ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])});
+            if (ball->getPosX() > paddle->getPosX()) {
+                ball->setVelocity(vec2{(ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])});
+            }
+            if (ball->getPosX() < paddle->getPosX()) {
+                ball->setVelocity(vec2{(-1 * ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])});
+            }
         }
         for(const unique_ptr<Shape> &brick : bricksNormal) {
             if (ball->isOverlappingPaddle(*ball, *brick)) {
-                //ball->bounce();
                 ball->setVelocity(-ball->getVelocity());
                 brick->setPos(vec2{-1000,-1000});
             }
@@ -381,7 +385,6 @@ void Engine::update() {
         }
         for(const unique_ptr<Shape> &brick : bricksHard) {
             if (ball->isOverlappingPaddle(*ball, *brick)) {
-                //ball->bounce();
                 ball->setVelocity(-ball->getVelocity());
                 brick->setPos(vec2{-1000,-1000});
             }
