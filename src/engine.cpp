@@ -217,6 +217,11 @@ void Engine::processInput() {
             screen = random_;
     }
 
+//    if ((screen == easy || screen == normal || screen == hard || screen == random_)
+//    && deathCounter == 3) {
+//        screen = lose;
+//    }
+
     // if mouse is pressed
     bool mousePressed = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
 
@@ -352,6 +357,14 @@ void Engine::update() {
             //ball->bounce();
             ball->setVelocity(-ball->getVelocity());
             brick->setPos(vec2{-1000,-1000});
+        }
+    }
+
+    for(const unique_ptr<Shape> &brick2 : bricksEasy) {
+        if (ball->isOverlappingPaddle(*ball, *brick2)) {
+            //ball->bounce();
+            ball->setVelocity(-ball->getVelocity());
+            brick2->setPos(vec2{-1000,-1000});
         }
     }
 }
