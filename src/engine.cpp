@@ -71,7 +71,7 @@ void Engine::initShapes() {
     srand(time(NULL));
     // red paddle at bottom middle of screen
     paddle = make_unique<Rect>(shapeShader, vec2{width / 2, height / 4}, vec2{200, 15}, color{1, 0, 0, 1});
-    // red ball just above paddle
+    // white ball just above paddle
     ball = make_unique<Circle>(shapeShader, vec2{width / 2, height / 3}, 2.25,color{1, 1, 1, 1});
     ball->setVelocity(vec2{0, 0});
 
@@ -466,6 +466,10 @@ void Engine::render() {
             break;
         }
         case easy: {
+            string message1 = "You win!";
+            // Display the message on the screen
+            this->fontRenderer->renderText(message1, width - (12 * message1.length()), height, projection, 1, vec3{1, 1, 1});
+
             ball->setUniforms();
             ball->draw();
             paddle->setUniforms();
