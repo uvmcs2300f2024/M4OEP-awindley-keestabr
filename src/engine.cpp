@@ -86,6 +86,7 @@ void Engine::initShapes() {
             x -= 100;
         }
         else {
+            // else block for changing color based off of y position
             y -= 50;
             if (y < 725 && y >= 675) {
                 x = 900;
@@ -114,6 +115,7 @@ void Engine::initShapes() {
             x -= 100;
         }
         else {
+            // else block for changing color based off of y position
             y -= 50;
             if (y < 725 && y >= 675) {
                 // change color for each subsequent line
@@ -144,6 +146,7 @@ void Engine::initShapes() {
             x -= 100;
         }
         else {
+            // else block for changing color based off of y position
             y -= 50;
             if (y < 725 && y >= 675) {
                 // change color for each subsequent line
@@ -177,6 +180,7 @@ void Engine::initShapes() {
             x -= 100;
         }
         else {
+            // decrement y position and reset x to the left
             y -= 50;
             x = 950;
             --i;
@@ -235,14 +239,12 @@ void Engine::processInput() {
         screen = start;
     }
 
-    // if mouse is pressed
-    bool mousePressed = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
-
     // If we're in the play screen and an arrow key is pressed, move the paddle and
     if (screen == easy) {
         float speed = 300.0f * deltaTime;
-        // start the ball on click
+        // start the ball on press of space
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
+            // add some randomness for angle of start
             if (rand() % 2 == 0) {
                 ball->setVelocity(vec2(-(rand() % 150), 300));
             }
@@ -251,13 +253,15 @@ void Engine::processInput() {
             }
         }
 
+        // paddle will move left and right with arrow keys at different speeds for each mode
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
         if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
 
     }
     if (screen == normal) {
-        // start the ball on click
+        // start the ball on press of space
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
+            // add some randomness for angle of start
             if (rand() % 2 == 0) {
                 ball->setVelocity(vec2(-(rand() % 200), 450));
             }
@@ -267,13 +271,15 @@ void Engine::processInput() {
         }
         float speed = 300.0f * deltaTime;
 
+        // paddle will move left and right with arrow keys at different speeds for each mode
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
         if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
     }
 
     if (screen == hard) {
-        // start the ball on click
+        // start the ball on press of space
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
+            // add some randomness for angle of start
             if (rand() % 2 == 0) {
                 ball->setVelocity(vec2(-(rand() % 250), 550));
             }
@@ -283,14 +289,15 @@ void Engine::processInput() {
         }
         float speed = 400.0f * deltaTime;
 
+        // paddle will move left and right with arrow keys at different speeds for each mode
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
         if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
-
     }
 
     if (screen == random_) {
-        // start the ball on click
+        // start the ball on press of space
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
+            // add some randomness for angle of start
             if (rand() % 2 == 0) {
                 ball->setVelocity(vec2(-(rand() % 300), 550));
             }
@@ -300,6 +307,7 @@ void Engine::processInput() {
         }
         float speed = 400.0f * deltaTime;
 
+        // paddle will move left and right with arrow keys at different speeds for each mode
         if (keys[GLFW_KEY_LEFT] && paddle->getLeft() > 0) paddle->moveX(-speed);
         if (keys[GLFW_KEY_RIGHT] && paddle->getRight() < width) paddle->moveX(speed);
 
@@ -379,7 +387,6 @@ void Engine::update() {
         }
         for(const unique_ptr<Shape> &brick : bricksEasy) {
             if (ball->isOverlappingPaddle(*ball, *brick)) {
-                //ball->bounce();
                 ball->setVelocity(-ball->getVelocity());
                 brick->setPos(vec2{-1000,-1000});
             }
@@ -421,7 +428,6 @@ void Engine::update() {
         }
         for(const unique_ptr<Shape> &brick : bricksRandom) {
             if (ball->isOverlappingPaddle(*ball, *brick)) {
-                //ball->bounce();
                 ball->setVelocity(-ball->getVelocity());
                 brick->setPos(vec2{-1000,-1000});
             }
@@ -445,11 +451,8 @@ void Engine::render() {
             string normal = "Normal (n)";
             string hard = "Hard (h)";
             string random = "Random (r)";
-            // (12 * message.length()) is the offset to center text.
-            // 12 pixels is the width of each character scaled by 1.
-            // NOTE: This line changes the shader being used to the font shader.
-            //  If you want to draw shapes again after drawing text,
-            //  you'll need to call shapeShader.use() again first.
+
+            // text for each game mode
             this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height - 200, projection, 1, vec3{1, 1, 1});
             this->fontRenderer->renderText(easy, width/2 - (6 * message.length()), height - 300, projection, 1, vec3{1, 1, 1});
             this->fontRenderer->renderText(normal, width/2 - (6 * message.length()), height - 350, projection, 1, vec3{1, 1, 1});

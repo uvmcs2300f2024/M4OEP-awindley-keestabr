@@ -71,29 +71,14 @@ bool Circle::isOverlapping(const Shape &other) const {
     return false;
 }
 
-//bool Circle::isOverlapping(const Rect &other) const {
-//    return isOverlappingPaddle(*this, other);
-//}
-
 void Circle::bounce() {
     srand(time(NULL));
     glm::vec2 delta = this->getPos();
     float distance = glm::length(delta);
-    //float overlap = 0.5f * (this->getRadius() - distance);
 
-    // Check if circles are overlapping
-    // Adjust positions based on radius (as a proxy for mass)
     float thisMass = this->getRadius() * this->getRadius() * M_PI;
-    //float otherMass = other.getRadius() * other.getRadius() * M_PI;
-    //float totalMass = thisMass + otherMass;
-
     this->setPos(this->getPos() - (thisMass) * delta / distance);
-    //other.setPos(other.getPos() + overlap * (otherMass / totalMass) * delta / distance);
-
-    // Velocity calculations for elastic collision
     glm::vec2 thisVelocity = this->getVelocity();
-    //glm::vec2 otherVelocity = other.getVelocity();
-    //glm::vec2 velocityDifference = thisVelocity;
 
     float dotProduct = glm::dot(thisVelocity, delta) / (distance * distance);
     glm::vec2 collisionNormal = dotProduct * delta;
@@ -107,5 +92,4 @@ void Circle::bounce() {
     if (rand() % 3 == 2) {
         this->setVelocity(vec2(-thisVelocity[0] - (rand() % 10),-thisVelocity[1]));
     }
-    //other.setVelocity(otherVelocity + (2 * thisMass / totalMass) * collisionNormal);
 }
