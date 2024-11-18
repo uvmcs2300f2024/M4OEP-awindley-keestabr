@@ -450,13 +450,20 @@ void Engine::render() {
             string normal = "Normal (n)";
             string hard = "Hard (h)";
             string random = "Random (r)";
-
+            string instructionsTitle = "Instructions:";
+            string instructions1 = "Arrow keys (Left, Right) to move!";
+            string instructions2 = "Hit ball into bricks to break them!";
+            string instructions3 = "Break all bricks to win! Have fun :D";
             // text for each game mode
-            this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height - 200, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(message, width/2 - (13.5 * message.length()), height - 200, projection, 1.2, vec3{1, 1, 1});
             this->fontRenderer->renderText(easy, width/2 - (6 * message.length()), height - 300, projection, 1, vec3{1, 1, 1});
             this->fontRenderer->renderText(normal, width/2 - (6 * message.length()), height - 350, projection, 1, vec3{1, 1, 1});
             this->fontRenderer->renderText(hard, width/2 - (6 * message.length()), height - 400, projection, 1, vec3{1, 1, 1});
             this->fontRenderer->renderText(random, width/2 - (6 * message.length()), height - 450, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(instructionsTitle, width/2 - (12 * instructionsTitle.length()), 190, projection, 1, vec3{1, 1, 1});
+            this->fontRenderer->renderText(instructions1, width/2 - (9 * instructions1.length()), 150, projection, .75, vec3{1, 0, 0});
+            this->fontRenderer->renderText(instructions2, width/2 - (9 * instructions2.length()), 125, projection, .75, vec3{1, 0, 0});
+            this->fontRenderer->renderText(instructions3, width/2 - (9 * instructions3.length()), 100, projection, .75, vec3{1, 0, 0});
             break;
         }
         case easy: {
