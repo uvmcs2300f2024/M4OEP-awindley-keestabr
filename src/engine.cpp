@@ -435,10 +435,6 @@ void Engine::render() {
             break;
         }
         case easy: {
-            string message1 = "You win!";
-            // Display the message on the screen
-            this->fontRenderer->renderText(message1, width - (12 * message1.length()), height, projection, 1, vec3{1, 1, 1});
-
             ball->setUniforms();
             ball->draw();
             paddle->setUniforms();
@@ -453,7 +449,9 @@ void Engine::render() {
             if (ball->getVelocity() == vec2(0,0)) {
                 this->fontRenderer->renderText(message, width/2 - (12 * message.length()), height/2, projection, 1, vec3{1, 1, 1});
             }
-
+            string message1 = "Death Counts: ";
+            // Display the message on the screen
+            this->fontRenderer->renderText(message1, 100 - (12 * message1.length()), 100, projection, 1, vec3{1, 1, 1});
             break;
         }
         case normal: {
