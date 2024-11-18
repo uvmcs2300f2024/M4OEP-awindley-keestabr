@@ -228,6 +228,7 @@ void Engine::processInput() {
         ball->setVelocity(vec2{0,0});
         ball->setPos(vec2{width / 2, height / 3});
         deathCounter = 0;
+        initShapes();
         screen = start;
     }
 
@@ -236,7 +237,7 @@ void Engine::processInput() {
 
     // If we're in the play screen and an arrow key is pressed, move the paddle and
     if (screen == easy) {
-        float speed = 200.0f * deltaTime;
+        float speed = 300.0f * deltaTime;
         // start the ball on click
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
             ball->setVelocity(vec2(-150,300));
@@ -391,7 +392,8 @@ void Engine::update() {
                     }
                     else {
                         ball->setVelocity(vec2{(ball->getVelocity()[0]) - rand() % 80, -1 * (ball->getVelocity()[1])});
-                    }                    }
+                    }
+                }
                 else {
                     if (rand() % 2 == 0) {
                         ball->setVelocity(vec2{-1 * (ball->getVelocity()[0]) + rand() % 80, -1 * (ball->getVelocity()[1])});
