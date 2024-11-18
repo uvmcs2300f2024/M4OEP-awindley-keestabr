@@ -50,6 +50,9 @@ private:
     vector<unique_ptr<Shape>> bricksHard;
     vector<unique_ptr<Shape>> bricksRandom;
 
+    // Counters
+    int deathCounter;
+
     // Shaders
     Shader shapeShader;
     Shader textShader;
