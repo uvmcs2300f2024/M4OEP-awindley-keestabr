@@ -318,22 +318,21 @@ void Engine::checkBounds(unique_ptr<Circle> &ball) const {
     if (position.x - bubbleRadius <= 0) {
         position.x = bubbleRadius;
         velocity.x = -velocity.x;
-        deathCounter++;
     }
     if (position.x + bubbleRadius >= width) {
         position.x = width - bubbleRadius;
         velocity.x = -velocity.x;
-        deathCounter++;
     }
     if (position.y - bubbleRadius <= 0) {
         position.y = bubbleRadius;
         velocity.y = -velocity.y;
         deathCounter++;
+        ball->setVelocity(vec2{0,0});
+        ball->setPos(vec2{width / 2, height / 3});
     }
     if (position.y + bubbleRadius >= height) {
         position.y = height - bubbleRadius;
         velocity.y = -velocity.y;
-        deathCounter++;
     }
 
     ball->setPos(position);
