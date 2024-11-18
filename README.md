@@ -11,7 +11,9 @@ or quit. Higher difficulties increase the speed of the ball and lower
 
 * Known bugs: Paddle overlap detection can sometimes be finicky on Mac. Ball will
 sometimes go through the paddle. On Windows, however, the detections works great, so not
-sure where the issue is. Video was recorded on Windows to avoid this issue.
+sure where the issue is. Video was recorded on Windows to avoid this issue. Also, in random a brick could
+potentially be completely black making it very hard to win! Also, on random mode specifically has some errors
+in brick collision.
 
 * Future Work: There is lots of room in the graphical presentation. Could add fancier effects
 when breaking bricks or shade them in more interesting ways. We could also add more transitions
