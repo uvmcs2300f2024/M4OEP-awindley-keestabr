@@ -241,7 +241,7 @@ void Engine::processInput() {
     if (screen == normal) {
         // start the ball on click
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
-            ball->setVelocity(vec2(0,450));
+            ball->setVelocity(vec2(-300,450));
         }
         float speed = 300.0f * deltaTime;
 
@@ -252,7 +252,7 @@ void Engine::processInput() {
     if (screen == hard) {
         // start the ball on click
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
-            ball->setVelocity(vec2(0,550));
+            ball->setVelocity(vec2(-400,550));
         }
         float speed = 400.0f * deltaTime;
 
@@ -264,7 +264,7 @@ void Engine::processInput() {
     if (screen == random_) {
         // start the ball on click
         if (keys[GLFW_KEY_SPACE] && ball->getVelocity() == vec2(0,0)) {
-            ball->setVelocity(vec2(0,550));
+            ball->setVelocity(vec2(-400,550));
         }
         float speed = 400.0f * deltaTime;
 
