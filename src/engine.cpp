@@ -393,7 +393,6 @@ void Engine::update() {
 
     if (screen == random_) {
         if (ball->isOverlappingPaddle(*ball, *paddle)) {
-            // add randomness so that the ball might bounce slightly left or right
             ball->setVelocity(vec2{(ball->getVelocity()[0]), -1 * (ball->getVelocity()[1])});
         }
         for(const unique_ptr<Shape> &brick : bricksRandom) {
