@@ -1,5 +1,5 @@
 # M4OEP-awindley-keestabr
-* Breakout!
+* Breakout, Windows only
 
 * Project by: Austin Windley and Kate Estabrook
 
