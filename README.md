@@ -19,8 +19,3 @@ in brick collision.
 when breaking bricks or shade them in more interesting ways. We could also add more transitions
 through the levels to make a larger experience and could expand the theatrics of the death/end
 screen.
-
-* We think we have earned 120 points as we not only fulfilled every major requirement, but we
-also added many screens and have decently complicated math on brick placement and ball velocity.
-
-Hopefully we made you laugh with our dumb video! :)
